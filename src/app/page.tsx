@@ -103,8 +103,14 @@ export default function Home() {
               </div>
               <p>{project.description}</p>
               <p className={styles.stack}>{project.stack.join(", ")}</p>
-              {project.link && (
-                <a href={project.link.href}>{project.link.label}</a>
+              {project.links && (
+                <p className={styles.links}>
+                  {project.links.map((l) => (
+                    <a key={l.href} href={l.href}>
+                      {l.label}
+                    </a>
+                  ))}
+                </p>
               )}
             </li>
           ))}

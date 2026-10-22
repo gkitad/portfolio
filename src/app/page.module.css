@@ -205,6 +205,12 @@
   gap: 1rem;
 }
 
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
 .stack {
   color: var(--muted);
   font-size: 0.95rem;

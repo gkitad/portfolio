@@ -21,15 +21,18 @@ export const projects: {
   status: Status;
   description: string;
   stack: string[];
-  link?: { label: string; href: string };
+  links?: { label: string; href: string }[];
 }[] = [
   {
     name: "AI IT Helpdesk Assistant",
-    status: "in-progress",
+    status: "shipped",
     description:
       "Describe an IT problem in plain words and the assistant files a ticket: it sets priority and category, searches a knowledge base of help desk runbooks, walks the user through safe troubleshooting steps, and escalates to the right team with a handoff note when the steps don't work.",
     stack: ["Next.js", "TypeScript", "Claude API", "Structured outputs", "BM25 retrieval"],
-    link: { label: "View source", href: "https://github.com/gkitad/it-helpdesk-assistant" },
+    links: [
+      { label: "Try the live demo", href: "https://it-helpdesk-assistant-three.vercel.app/" },
+      { label: "View source", href: "https://github.com/gkitad/it-helpdesk-assistant" },
+    ],
   },
   {
     name: "Griffin Care Tracker",
@@ -44,7 +47,7 @@ export const projects: {
     description:
       "Designed and built from scratch, deployed on Vercel with continuous deployment from GitHub.",
     stack: ["Next.js", "React", "TypeScript"],
-    link: { label: "View source", href: "https://github.com/gkitad/portfolio" },
+    links: [{ label: "View source", href: "https://github.com/gkitad/portfolio" }],
   },
 ];
 
