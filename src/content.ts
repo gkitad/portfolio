@@ -24,6 +24,17 @@ export const projects: {
   links?: { label: string; href: string }[];
 }[] = [
   {
+    name: "IT Onboarding Agent",
+    status: "shipped",
+    description:
+      "An AI agent that onboards new hires and offboards leavers across a simulated company directory: accounts, licenses, groups, hardware, tasks for Desktop Support and email drafts for managers. Access to sensitive groups and disabling accounts wait for a person to approve, admin and production access are refused in code, and every change lands in an audit log.",
+    stack: ["Next.js", "TypeScript", "Claude API", "Tool use", "Human-in-the-loop approvals"],
+    links: [
+      { label: "Try the live demo", href: "https://it-onboarding-agent-nine.vercel.app/" },
+      { label: "View source", href: "https://github.com/gkitad/it-onboarding-agent" },
+    ],
+  },
+  {
     name: "AI IT Helpdesk Assistant",
     status: "shipped",
     description:
