@@ -27,8 +27,9 @@ export const projects: {
     name: "AI IT Helpdesk Assistant",
     status: "in-progress",
     description:
-      "Describe an IT problem in plain words and the assistant triages it: sets priority and category, searches a knowledge base written from real support cases, and walks the user through troubleshooting or escalates to Tier 2.",
-    stack: ["Next.js", "Claude API", "RAG", "PostgreSQL"],
+      "Describe an IT problem in plain words and the assistant files a ticket: it sets priority and category, searches a knowledge base of help desk runbooks, walks the user through safe troubleshooting steps, and escalates to the right team with a handoff note when the steps don't work.",
+    stack: ["Next.js", "TypeScript", "Claude API", "Structured outputs", "BM25 retrieval"],
+    link: { label: "View source", href: "https://github.com/gkitad/it-helpdesk-assistant" },
   },
   {
     name: "Griffin Care Tracker",
