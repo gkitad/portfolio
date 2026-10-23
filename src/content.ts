@@ -1,105 +1,100 @@
 // All the text on the site lives here. Edit this file to update the page.
 
+import type { StaticImageData } from "next/image";
+import incidentShot from "@/assets/work/incident-responder.jpg";
+import onboardingShot from "@/assets/work/onboarding-agent.jpg";
+import helpdeskShot from "@/assets/work/helpdesk-assistant.jpg";
+
 export const profile = {
   name: "Anthony Jaimez",
-  role: "IT Support Specialist building with AI",
+  title: "IT Support & AI",
   location: "Round Rock, TX",
-  availability: "Open to remote roles in AI and IT",
   email: "anthony.jaimez.it@gmail.com",
   linkedin: "https://www.linkedin.com/in/anthonyjaimez",
   github: "https://github.com/gkitad",
-  summary: [
-    "I've spent 5+ years on enterprise help desks, keeping people and their machines working — from a supermarket chain in Peru to school districts in Texas to a semiconductor fab in Austin.",
-    "Now I build software with AI: mobile apps, websites, and automations. I'm moving toward roles where I can use both — someone who understands the support queue from the inside and can build the tools that shorten it.",
+  heroLead: "Help Desk Support Technician at Samsung Austin Semiconductor. Based in Round Rock, TX.",
+  heroSub: "5+ years of enterprise support. Open to remote roles in AI and IT.",
+  about: [
+    "I've spent more than five years on enterprise help desks, keeping people and their machines working: a supermarket chain's headquarters in Peru, an insurance client for Capgemini, school districts across Central Texas, and now a semiconductor fab in Austin.",
+    "That work taught me how problems actually show up: a vague complaint, three red herrings, and a cause two systems away. Now I build AI that works the same way, with tools, evidence and a person approving anything risky. I'm looking for roles where I can do both.",
   ],
 };
 
-export type Status = "shipped" | "in-progress";
-
-export const projects: {
+export type Project = {
   name: string;
-  status: Status;
+  meta: string;
+  tagline: string;
   description: string;
   stack: string[];
-  links?: { label: string; href: string }[];
-}[] = [
+  proof?: string;
+  image?: { src: StaticImageData; alt: string; url: string };
+  demo?: string;
+  source?: string;
+};
+
+export const projects: Project[] = [
   {
-    name: "IT Onboarding Agent",
-    status: "shipped",
+    name: "AI Incident Responder",
+    meta: "Claude API, 2026",
+    tagline: "Break something in a simulated network and watch an AI on-call engineer find the cause.",
     description:
-      "An AI agent that onboards new hires and offboards leavers across a simulated company directory: accounts, licenses, groups, hardware, tasks for Desktop Support and email drafts for managers. Access to sensitive groups and disabling accounts wait for a person to approve, admin and production access are refused in code, and every change lands in an audit log.",
-    stack: ["Next.js", "TypeScript", "Claude API", "Tool use", "Human-in-the-loop approvals"],
-    links: [
-      { label: "Try the live demo", href: "https://it-onboarding-agent-nine.vercel.app/" },
-      { label: "View source", href: "https://github.com/gkitad/it-onboarding-agent" },
-    ],
+      "Inject one of six realistic outages, or a hidden one. The agent gets only the user's complaint, reproduces it, tracks its hypotheses, follows logs, DNS, certificates and the change log past deliberate red herrings, fixes it with your approval, and writes the postmortem.",
+    stack: ["Next.js", "TypeScript", "Claude API", "Tool use", "AES-GCM encrypted state"],
+    proof: "Resolved 6 of 6 outages with one change each in live testing.",
+    image: {
+      src: incidentShot,
+      alt: "The Incident Responder mid-investigation: a network map with the database marked as failing, the agent's hypotheses, and a change waiting for approval.",
+      url: "ai-incident-responder.vercel.app",
+    },
+    demo: "https://ai-incident-responder.vercel.app/",
+    source: "https://github.com/gkitad/ai-incident-responder",
   },
   {
-    name: "AI IT Helpdesk Assistant",
-    status: "shipped",
+    name: "IT Onboarding Agent",
+    meta: "Claude API, 2026",
+    tagline: "Provisions new hires and offboards leavers, with a person approving anything sensitive.",
     description:
-      "Describe an IT problem in plain words and the assistant files a ticket: it sets priority and category, searches a knowledge base of help desk runbooks, walks the user through safe troubleshooting steps, and escalates to the right team with a handoff note when the steps don't work.",
-    stack: ["Next.js", "TypeScript", "Claude API", "Structured outputs", "BM25 retrieval"],
-    links: [
-      { label: "Try the live demo", href: "https://it-helpdesk-assistant-three.vercel.app/" },
-      { label: "View source", href: "https://github.com/gkitad/it-helpdesk-assistant" },
-    ],
+      "Describe who's starting or leaving and the agent works through a simulated directory: accounts, licenses, groups, hardware, tasks for Desktop Support and an email for the manager. Payroll and HR access wait for approval, admin and production access are refused in code, and every change lands in an audit log.",
+    stack: ["Next.js", "TypeScript", "Claude API", "Tool use", "Human-in-the-loop"],
+    image: {
+      src: onboardingShot,
+      alt: "The Onboarding Agent provisioning a new Finance hire, paused for approval before granting access to the payroll share.",
+      url: "it-onboarding-agent-nine.vercel.app",
+    },
+    demo: "https://it-onboarding-agent-nine.vercel.app/",
+    source: "https://github.com/gkitad/it-onboarding-agent",
+  },
+  {
+    name: "AI Helpdesk Assistant",
+    meta: "Claude API, 2026",
+    tagline: "Turns a plain-words complaint into a triaged ticket with fixes from real runbooks.",
+    description:
+      "It sets priority and category, searches a knowledge base of help desk runbooks with BM25, walks the user through safe self-service steps, and escalates to the right team with a handoff note. Phishing and compromised accounts go straight to Security as P1.",
+    stack: ["Next.js", "TypeScript", "Claude API", "Structured outputs", "Retrieval"],
+    image: {
+      src: helpdeskShot,
+      alt: "The Helpdesk Assistant escalating a phishing report to Security as a P1, with containment steps and a handoff note.",
+      url: "it-helpdesk-assistant-three.vercel.app",
+    },
+    demo: "https://it-helpdesk-assistant-three.vercel.app/",
+    source: "https://github.com/gkitad/it-helpdesk-assistant",
   },
   {
     name: "Griffin Care Tracker",
-    status: "shipped",
+    meta: "React Native, 2026",
+    tagline: "The iPhone app my wife and I use to keep our dog's walks and meals in sync.",
     description:
-      "An iPhone app my wife and I use to coordinate our dog's care across different work schedules. Tap when he's been walked or fed, morning and evening; it resets every day.",
+      "We work different shifts, so one tap logs that Griffin was walked or fed, morning and evening, and it resets every day. My first app, and the reason I started building.",
     stack: ["React Native", "Expo", "TypeScript"],
-  },
-  {
-    name: "This portfolio",
-    status: "shipped",
-    description:
-      "Designed and built from scratch, deployed on Vercel with continuous deployment from GitHub.",
-    stack: ["Next.js", "React", "TypeScript"],
-    links: [{ label: "View source", href: "https://github.com/gkitad/portfolio" }],
   },
 ];
 
-export const experience: {
-  company: string;
-  detail?: string;
-  title: string;
-  period?: string;
-  place?: string;
-}[] = [
-  {
-    company: "Samsung Austin Semiconductor",
-    title: "Help Desk Support Technician",
-    period: "Sep 2026 – Present",
-    place: "Austin, TX",
-  },
-  {
-    company: "Capgemini",
-    detail: "Client: Progressive Insurance",
-    title: "IT Support Specialist",
-    period: "2024",
-  },
-  {
-    company: "GTS Technology Solutions",
-    detail: "Round Rock ISD and Austin ISD",
-    title: "Field Deployment Technician",
-    place: "Round Rock & Austin, TX",
-  },
-  {
-    company: "Manpower",
-    title: "IT Support Specialist",
-    period: "Oct 2021 – Sep 2022",
-    place: "Peru",
-  },
-  {
-    company: "Sapia",
-    detail: "Client: Supermercados Peruanos",
-    title: "IT Support Specialist",
-    period: "Mar 2017 – Sep 2021",
-    place: "Peru",
-  },
+export const experience: { company: string; detail?: string; title: string; period?: string }[] = [
+  { company: "Samsung Austin Semiconductor", title: "Help Desk Support Technician", period: "2026 – now" },
+  { company: "Capgemini", detail: "Progressive Insurance", title: "IT Support Specialist", period: "2024" },
+  { company: "GTS Technology Solutions", detail: "Round Rock ISD and Austin ISD", title: "Field Deployment Technician" },
+  { company: "Manpower", detail: "Peru", title: "IT Support Specialist", period: "2021 – 2022" },
+  { company: "Sapia", detail: "Supermercados Peruanos", title: "IT Support Specialist", period: "2017 – 2021" },
 ];
 
 export const education = {
@@ -114,9 +109,9 @@ export const skills = [
   "Microsoft 365",
   "Hardware deployment & imaging",
   "Ticketing & SLAs",
-  "React & React Native",
-  "Next.js & TypeScript",
+  "AI agents & tool use",
   "Claude API & prompt design",
-  "Email & workflow automation",
+  "Next.js, React & TypeScript",
+  "React Native",
   "English & Spanish",
 ];

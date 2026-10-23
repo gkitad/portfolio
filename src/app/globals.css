@@ -1,31 +1,25 @@
 :root {
-  --paper: #f2f4f1;
-  --surface: #fbfcfa;
-  --ink: #17202a;
-  --muted: #5b6670;
-  --line: #d3d9d1;
-  --resolved: #1f7a4d;
-  --resolved-bg: #dcefe3;
-  --progress: #9a6510;
-  --progress-bg: #f6e8cc;
-  --link: #1d4f7a;
-  --focus: #1d4f7a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #141a1f;
-    --surface: #1b232a;
-    --ink: #e8ece6;
-    --muted: #9aa5ad;
-    --line: #2e3a43;
-    --resolved: #6fcf9a;
-    --resolved-bg: #173528;
-    --progress: #e7b867;
-    --progress-bg: #3a2c12;
-    --link: #8fc0ea;
-    --focus: #8fc0ea;
-  }
+  --bg: #0f1012;
+  --bg-raise: #17181b;
+  --panel: rgba(255, 255, 255, 0.035);
+  --panel-strong: rgba(255, 255, 255, 0.06);
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --text: #ececee;
+  --muted: #9a9ca3;
+  --faint: #63656c;
+  --ok: #5fd394;
+  --ok-bg: rgba(95, 211, 148, 0.12);
+  --warn: #f2b544;
+  --warn-bg: rgba(242, 181, 68, 0.12);
+  --fail: #ff6b5e;
+  --fail-bg: rgba(255, 107, 94, 0.13);
+  --unknown: #4b4d54;
+  --focus: #a9c7ff;
+  --sans: "Instrument Sans Variable", system-ui, sans-serif;
+  --serif: "Instrument Serif", Georgia, serif;
+  --mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  color-scheme: dark;
 }
 
 * {
@@ -34,26 +28,32 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  background: var(--bg);
 }
 
 body {
   margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: "Schibsted Grotesk Variable", system-ui, sans-serif;
-  font-size: 1.0625rem;
-  line-height: 1.6;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(1200px 600px at 50% -200px, rgba(255, 255, 255, 0.07), transparent 70%),
+    var(--bg);
 }
 
 h1,
 h2,
 h3,
+h4,
 p,
 ul,
 ol,
 dl,
-dd {
+dd,
+pre {
   margin: 0;
 }
 
@@ -64,19 +64,29 @@ ol {
 }
 
 a {
-  color: var(--link);
-  text-underline-offset: 0.2em;
+  color: inherit;
+  text-underline-offset: 0.22em;
   text-decoration-thickness: 1px;
 }
 
-a:hover {
-  text-decoration-thickness: 2px;
+button {
+  font: inherit;
+  color: inherit;
+}
+
+code,
+pre {
+  font-family: var(--mono);
 }
 
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: rgba(169, 199, 255, 0.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -85,6 +95,7 @@ a:hover {
   *::after {
     animation-duration: 0.01ms !important;
     animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
