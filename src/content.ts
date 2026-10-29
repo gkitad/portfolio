@@ -13,6 +13,7 @@ export const profile = {
   email: "anthony.jaimez.it@gmail.com",
   linkedin: "https://www.linkedin.com/in/anthonyjaimez",
   github: "https://github.com/gkitad",
+  resume: "/Anthony_Jaimez_Resume.pdf",
   heroIntro:
     "I've spent more than five years on enterprise help desks. I build AI tools that troubleshoot the way I do. They check the evidence first and ask before changing anything.",
   about: [

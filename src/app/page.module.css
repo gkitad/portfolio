@@ -153,6 +153,13 @@
   color: var(--text);
 }
 
+.btnNote {
+  font-family: var(--mono-font);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--faint);
+}
+
 .linkIcon {
   width: 0.95rem;
   height: 0.95rem;

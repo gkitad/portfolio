@@ -50,7 +50,10 @@ export default function Home() {
                   <path d="M8 3v10M4 9l4 4 4-4" />
                 </svg>
               </a>
-              <a href={profile.github} className={styles.btnGhost}>
+              <a href={profile.resume} className={styles.btnGhost} target="_blank" rel="noopener">
+                Resume <span className={styles.btnNote}>PDF</span>
+              </a>
+              <a href={profile.github} className={styles.btnText}>
                 GitHub
               </a>
               <a href={profile.linkedin} className={styles.btnText}>
@@ -184,6 +187,12 @@ export default function Home() {
             <li>
               <span>GitHub</span>
               <a href={profile.github}>github.com/gkitad</a>
+            </li>
+            <li>
+              <span>Resume</span>
+              <a href={profile.resume} target="_blank" rel="noopener">
+                Anthony_Jaimez_Resume.pdf
+              </a>
             </li>
           </ul>
         </section>
