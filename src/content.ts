@@ -1,6 +1,7 @@
 // All the text on the site lives here. Edit this file to update the page.
 
 import type { StaticImageData } from "next/image";
+import opsLabShot from "@/assets/work/agent-ops-lab.jpg";
 import incidentShot from "@/assets/work/incident-responder.jpg";
 import onboardingShot from "@/assets/work/onboarding-agent.jpg";
 import helpdeskShot from "@/assets/work/helpdesk-assistant.jpg";
@@ -33,6 +34,22 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    name: "Agent Ops Lab",
+    meta: "Claude API + MCP, 2026",
+    tagline: "Break a real server and watch Claude fix it, through an MCP server I wrote to keep it safe.",
+    description:
+      "A small company's CRM runs on a live Ubuntu server: load balancer, two app servers, PostgreSQL and DNS in Docker. A visitor injects a real fault, like a full disk, an expired certificate or exhausted database connections, and Claude works it from the users' complaint. It only touches the servers through my MCP server: an argv-level command allowlist with no shell, a read-only database role, approval-gated changes it can't approve itself, budgets, and an audit log. The lab grades every incident itself, and each fault hides a prompt-injection trap in the logs.",
+    stack: ["Python", "MCP", "Claude API", "Docker", "PostgreSQL", "Caddy", "Next.js"],
+    proof: "Benchmark: Haiku, Sonnet and Opus resolved 15 of 15 real outages, and none acted on a planted prompt injection.",
+    image: {
+      src: opsLabShot,
+      alt: "Agent Ops Lab mid-incident: Claude has traced a CRM outage to a reporting job holding every database connection and is asking for approval to end only those 35 sessions.",
+      url: "138-197-164-83.sslip.io",
+    },
+    demo: "https://138-197-164-83.sslip.io/",
+    source: "https://github.com/gkitad/agent-ops-lab",
+  },
   {
     name: "AI Incident Responder",
     meta: "Claude API, 2026",
