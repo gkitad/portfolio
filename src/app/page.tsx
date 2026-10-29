@@ -1,66 +1,19 @@
-import Image from "next/image";
 import styles from "./page.module.css";
 import Nav from "@/components/Nav";
-import { education, experience, profile, projects, skills, type Project } from "@/content";
-
-function ProjectCard({ project }: { project: Project }) {
-  const href = project.demo ?? project.source;
-  return (
-    <article className={styles.project}>
-      <header className={styles.projectHead}>
-        <div>
-          <h3 className={styles.projectName}>
-            {href ? <a href={href}>{project.name}</a> : project.name}
-          </h3>
-          <p className={styles.projectMeta}>
-            <strong>{project.meta}.</strong> {project.tagline}
-          </p>
-        </div>
-        {href && (
-          <a href={href} className={styles.arrow} aria-label={`Open ${project.name}`}>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </a>
-        )}
-      </header>
-
-      {project.image && (
-        <a href={href} className={styles.shot} tabIndex={-1} aria-hidden="true">
-          <div className={styles.shotBar}>
-            <span />
-            <span />
-            <span />
-            <p>{project.image.url}</p>
-          </div>
-          <Image
-            src={project.image.src}
-            alt={project.image.alt}
-            sizes="(max-width: 900px) 100vw, 1000px"
-            placeholder="blur"
-            className={styles.shotImg}
-          />
-        </a>
-      )}
-
-      <div className={styles.projectFoot}>
-        <p className={styles.projectDesc}>{project.description}</p>
-        <div className={styles.projectSide}>
-          {project.proof && <p className={styles.proof}>{project.proof}</p>}
-          <p className={styles.stack}>{project.stack.join(", ")}</p>
-          <p className={styles.projectLinks}>
-            {project.demo && <a href={project.demo}>Live demo ↗</a>}
-            {project.source && <a href={project.source}>Source ↗</a>}
-          </p>
-        </div>
-      </div>
-    </article>
-  );
-}
+import { Featured, PersonalProject, ProjectRow } from "@/components/Work";
+import { education, experience, profile, projects, skills } from "@/content";
 
 export default function Home() {
+  const featured = projects.filter((p) => p.kind === "featured");
+  const main = projects.filter((p) => p.kind === "main");
+  const personal = projects.filter((p) => p.kind === "personal");
+
   return (
     <div className={styles.page}>
+      <a href="#work" className={styles.skip}>
+        Skip to projects
+      </a>
+
       <header className={styles.top}>
         <a href="#top" className={styles.id}>
           <span className={styles.idName}>{profile.name}</span>
@@ -68,54 +21,97 @@ export default function Home() {
         </a>
         <Nav />
         <p className={styles.topLinks}>
-          <a href={profile.linkedin}>LinkedIn ↗</a>
-          <a href={profile.github}>GitHub ↗</a>
+          <a href={profile.github}>GitHub</a>
+          <a href={profile.linkedin}>LinkedIn</a>
         </p>
       </header>
 
       <main id="top">
-        <section className={styles.window} aria-label="Introduction">
-          <div className={styles.chrome} aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </div>
-          <div className={styles.hero}>
-            <h1 className={styles.heroTitle}>
+        <section className={styles.hero} aria-labelledby="hero-title">
+          <div className={styles.heroMain}>
+            <p className={styles.status}>
+              <span className={styles.statusDot} aria-hidden="true" />
+              Open to remote roles in AI and IT
+            </p>
+            <h1 id="hero-title" className={styles.heroTitle}>
               I solve IT problems,
               <br />
               and build AI that
               <br />
               <em>solves them too.</em>
             </h1>
-            <div className={styles.heroBio}>
-              <p>{profile.heroLead}</p>
-              <p className={styles.heroSub}>{profile.heroSub}</p>
-            </div>
-            <a href="#work" className={styles.down} aria-label="See work">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 4v16M6 14l6 6 6-6" />
-              </svg>
-            </a>
+            <p className={styles.heroLead}>
+              {profile.heroIntro}
+            </p>
+            <p className={styles.heroActions}>
+              <a href="#work" className={styles.btnPrimary}>
+                Explore projects
+                <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.linkIcon}>
+                  <path d="M8 3v10M4 9l4 4 4-4" />
+                </svg>
+              </a>
+              <a href={profile.github} className={styles.btnGhost}>
+                GitHub
+              </a>
+              <a href={profile.linkedin} className={styles.btnText}>
+                LinkedIn
+              </a>
+            </p>
           </div>
+
+          <dl className={styles.facts} aria-label="At a glance">
+            <div>
+              <dt>Now</dt>
+              <dd>
+                {experience[0].title}, {experience[0].company}
+              </dd>
+            </div>
+            <div>
+              <dt>Experience</dt>
+              <dd>5+ years of enterprise IT support</dd>
+            </div>
+            <div>
+              <dt>Building</dt>
+              <dd>AI agents for IT operations, with approvals and audit logs</dd>
+            </div>
+            <div>
+              <dt>Based in</dt>
+              <dd>{profile.location}</dd>
+            </div>
+          </dl>
         </section>
 
-        <section id="work" className={styles.work} aria-labelledby="work-title">
-          <h2 id="work-title" className={styles.sectionTitle}>
-            Selected work <span>’26</span>
-          </h2>
-          <div className={styles.projects}>
-            {projects.map((p) => (
-              <ProjectCard key={p.name} project={p} />
+        <section id="work" className={styles.section} aria-labelledby="work-title">
+          <header className={styles.sectionHead}>
+            <h2 id="work-title" className={styles.sectionTitle}>
+              Selected work
+            </h2>
+            <p className={styles.sectionNote}>{projects.length} projects, 2026</p>
+          </header>
+
+          {featured.map((p) => (
+            <Featured key={p.name} project={p} />
+          ))}
+
+          <div className={styles.rows}>
+            {main.map((p, i) => (
+              <ProjectRow key={p.name} project={p} index={i} />
             ))}
           </div>
+
+          {personal.map((p) => (
+            <PersonalProject key={p.name} project={p} />
+          ))}
         </section>
 
-        <section id="about" className={styles.about} aria-labelledby="about-title">
-          <h2 id="about-title" className={styles.sectionTitle}>
-            About
-          </h2>
-          <div className={styles.aboutGrid}>
+        <section id="about" className={styles.section} aria-labelledby="about-title">
+          <header className={styles.sectionHead}>
+            <h2 id="about-title" className={styles.sectionTitle}>
+              About
+            </h2>
+          </header>
+
+          <div className={styles.about}>
             <div className={styles.aboutText}>
               {profile.about.map((p) => (
                 <p key={p}>{p}</p>
@@ -124,64 +120,95 @@ export default function Home() {
 
             <div className={styles.aboutSide}>
               <section aria-labelledby="exp-title">
-                <h3 id="exp-title" className={styles.listTitle}>
+                <h3 id="exp-title" className={styles.miniTitle}>
                   Experience
                 </h3>
-                <ol className={styles.rows}>
+                <ol className={styles.timeline}>
                   {experience.map((job) => (
                     <li key={job.company}>
-                      <div>
-                        <p className={styles.rowMain}>{job.company}</p>
-                        <p className={styles.rowSub}>
-                          {job.title}
+                      <span className={styles.when}>{job.period ?? ""}</span>
+                      <span>
+                        <strong className={styles.role}>{job.title}</strong>
+                        <span className={styles.org}>
+                          {job.company}
                           {job.detail && `, ${job.detail}`}
-                        </p>
-                      </div>
-                      {job.period && <p className={styles.rowDate}>{job.period}</p>}
+                        </span>
+                      </span>
                     </li>
                   ))}
-                  <li>
-                    <div>
-                      <p className={styles.rowMain}>{education.degree}</p>
-                      <p className={styles.rowSub}>{education.school}</p>
-                    </div>
-                    <p className={styles.rowDate}>{education.year}</p>
-                  </li>
                 </ol>
               </section>
 
-              <section aria-labelledby="skills-title">
-                <h3 id="skills-title" className={styles.listTitle}>
-                  Skills
+              <section aria-labelledby="edu-title">
+                <h3 id="edu-title" className={styles.miniTitle}>
+                  Education
                 </h3>
-                <ul className={styles.skills}>
-                  {skills.map((s) => (
-                    <li key={s}>{s}</li>
-                  ))}
-                </ul>
+                <ol className={styles.timeline}>
+                  <li>
+                    <span className={styles.when}>{education.year}</span>
+                    <span>
+                      <strong className={styles.role}>{education.degree}</strong>
+                      <span className={styles.org}>{education.school}</span>
+                    </span>
+                  </li>
+                </ol>
               </section>
             </div>
           </div>
+
+          <section className={styles.skillsBlock} aria-labelledby="skills-title">
+            <h3 id="skills-title" className={styles.miniTitle}>
+              Skills
+            </h3>
+            <dl className={styles.skills}>
+              {skills.map((g) => (
+                <div key={g.group}>
+                  <dt>{g.group}</dt>
+                  <dd>
+                    <ul>
+                      {g.items.map((s) => (
+                        <li key={s}>{s}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
         </section>
 
-        <section className={styles.contact} aria-labelledby="contact-title">
-          <h2 id="contact-title" className={styles.contactTitle}>
-            Let&apos;s talk.
-          </h2>
-          <a href={`mailto:${profile.email}`} className={styles.email}>
-            {profile.email}
-          </a>
-          <p className={styles.contactLinks}>
-            <a href={profile.linkedin}>LinkedIn ↗</a>
-            <a href={profile.github}>GitHub ↗</a>
-          </p>
+        <section id="contact" className={styles.contact} aria-labelledby="contact-title">
+          <div>
+            <h2 id="contact-title" className={styles.contactTitle}>
+              Let&apos;s talk.
+            </h2>
+            <p className={styles.contactText}>
+              Email works best. I&apos;m open to remote roles in AI and IT.
+            </p>
+          </div>
+          <ul className={styles.contactList}>
+            <li>
+              <span>Email</span>
+              <a href={`mailto:${profile.email}`}>{profile.email}</a>
+            </li>
+            <li>
+              <span>LinkedIn</span>
+              <a href={profile.linkedin}>linkedin.com/in/anthonyjaimez</a>
+            </li>
+            <li>
+              <span>GitHub</span>
+              <a href={profile.github}>github.com/gkitad</a>
+            </li>
+          </ul>
         </section>
       </main>
 
       <footer className={styles.footer}>
-        <p>© 2026 {profile.name}. {profile.location}.</p>
         <p>
-          Built with Next.js and deployed on Vercel. <a href="https://github.com/gkitad/portfolio">Source ↗</a>
+          © 2026 {profile.name}. {profile.location}.
+        </p>
+        <p>
+          Built with Next.js and deployed on Vercel. <a href="https://github.com/gkitad/portfolio">Source</a>
         </p>
       </footer>
     </div>

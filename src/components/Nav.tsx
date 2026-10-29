@@ -6,10 +6,11 @@ import styles from "@/app/page.module.css";
 const SECTIONS = [
   { id: "work", label: "Work" },
   { id: "about", label: "About" },
+  { id: "contact", label: "Contact" },
 ];
 
 export default function Nav() {
-  const [active, setActive] = useState("work");
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     const els = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as HTMLElement[];
@@ -17,7 +18,7 @@ export default function Nav() {
       (entries) => {
         for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
       },
-      { rootMargin: "-45% 0px -50% 0px" },
+      { rootMargin: "-40% 0px -55% 0px" },
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
