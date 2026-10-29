@@ -43,7 +43,7 @@ export function Shot({ project, sizes, crop }: { project: Project; sizes: string
   return (
     <figure className={styles.attach}>
       <a href={project.demo ?? project.source} className={crop ? styles.attachCrop : styles.attachFull} tabIndex={-1} aria-hidden="true">
-        <Image src={project.image.src} alt={project.image.alt} sizes={sizes} placeholder="blur" className={styles.attachImg} />
+        <Image src={project.image.src} alt={project.image.alt} sizes={sizes} quality={90} placeholder="blur" className={styles.attachImg} />
       </a>
       <figcaption className={styles.attachCap}>
         <span>Attachment</span>

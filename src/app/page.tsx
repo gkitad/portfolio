@@ -71,7 +71,7 @@ export default function Home() {
             </div>
 
             <div className={styles.heroSide}>
-              {lab && <Shot project={lab} sizes="(max-width: 980px) 100vw, 560px" />}
+              {lab && <Shot project={lab} sizes="(max-width: 980px) 100vw, 1000px" />}
               <div className={styles.approval}>
                 <p className={styles.approvalText}>
                   <strong>{lab?.name}.</strong> {lab?.tagline}
