@@ -16,8 +16,8 @@ export const profile = {
   heroLead: "Help Desk Support Technician at Samsung Austin Semiconductor. Based in Round Rock, TX.",
   heroSub: "5+ years of enterprise support. Open to remote roles in AI and IT.",
   about: [
-    "I've spent more than five years on enterprise help desks, keeping people and their machines working: a supermarket chain's headquarters in Peru, an insurance client for Capgemini, school districts across Central Texas, and now a semiconductor fab in Austin.",
-    "That work taught me how problems actually show up: a vague complaint, three red herrings, and a cause two systems away. Now I build AI that works the same way, with tools, evidence and a person approving anything risky. I'm looking for roles where I can do both.",
+    "I've worked enterprise help desks for more than five years. I supported the headquarters of a supermarket chain in Peru, an insurance client through Capgemini, school districts around Round Rock and Austin, and now a semiconductor fab.",
+    "Most tickets start with something vague like \"it's not working,\" and the real cause is usually somewhere else. So I started building AI tools that troubleshoot the way I do. They look at the evidence first and ask before changing anything. I'm looking for a role where I can keep doing both.",
   ],
 };
 
@@ -37,11 +37,11 @@ export const projects: Project[] = [
   {
     name: "Agent Ops Lab",
     meta: "Claude API + MCP, 2026",
-    tagline: "Break a real server and watch Claude fix it, through an MCP server I wrote to keep it safe.",
+    tagline: "A live server I break on purpose so an AI agent can fix it, inside guardrails I wrote.",
     description:
-      "A small company's CRM runs on a live Ubuntu server: load balancer, two app servers, PostgreSQL and DNS in Docker. A visitor injects a real fault, like a full disk, an expired certificate or exhausted database connections, and Claude works it from the users' complaint. It only touches the servers through my MCP server: an argv-level command allowlist with no shell, a read-only database role, approval-gated changes it can't approve itself, budgets, and an audit log. The lab grades every incident itself, and each fault hides a prompt-injection trap in the logs.",
+      "I set up a small company's CRM on an Ubuntu server at DigitalOcean, with a load balancer, two app servers, PostgreSQL and DNS running in Docker. You pick a fault, like a full disk, an expired certificate or a database out of connections, and it really happens. Claude only gets the user's complaint, and it can only reach the servers through an MCP server I wrote in Python. It can run read-only commands from an allowlist, and every change waits for someone to approve it. The lab checks the result on its own, and every fault hides fake instructions in the logs to see if the agent falls for them.",
     stack: ["Python", "MCP", "Claude API", "Docker", "PostgreSQL", "Caddy", "Next.js"],
-    proof: "Benchmark: Haiku, Sonnet and Opus resolved 15 of 15 real outages, and none acted on a planted prompt injection.",
+    proof: "Tested with Haiku, Sonnet and Opus: 15 of 15 outages fixed, and none of them followed the fake instructions.",
     image: {
       src: opsLabShot,
       alt: "Agent Ops Lab mid-incident: Claude has traced a CRM outage to a reporting job holding every database connection and is asking for approval to end only those 35 sessions.",
@@ -53,11 +53,11 @@ export const projects: Project[] = [
   {
     name: "AI Incident Responder",
     meta: "Claude API, 2026",
-    tagline: "Break something in a simulated network and watch an AI on-call engineer find the cause.",
+    tagline: "A simulated company network with six outages and an AI on-call engineer that has to find the cause.",
     description:
-      "Inject one of six realistic outages, or a hidden one. The agent gets only the user's complaint, reproduces it, tracks its hypotheses, follows logs, DNS, certificates and the change log past deliberate red herrings, fixes it with your approval, and writes the postmortem.",
+      "Pick one of six outages, or a random one you don't get to see. The agent starts with only the user's complaint. It reproduces the problem, checks logs, DNS, certificates and recent changes, and has to get past the red herrings I planted. It asks before fixing anything and writes a postmortem at the end.",
     stack: ["Next.js", "TypeScript", "Claude API", "Tool use", "AES-GCM encrypted state"],
-    proof: "Resolved 6 of 6 outages with one change each in live testing.",
+    proof: "Fixed 6 of 6 outages with a single change each when I tested it.",
     image: {
       src: incidentShot,
       alt: "The Incident Responder mid-investigation: a network map with the database marked as failing, the agent's hypotheses, and a change waiting for approval.",
@@ -69,9 +69,9 @@ export const projects: Project[] = [
   {
     name: "IT Onboarding Agent",
     meta: "Claude API, 2026",
-    tagline: "Provisions new hires and offboards leavers, with a person approving anything sensitive.",
+    tagline: "Sets up new hires and removes people who leave, and asks before granting anything sensitive.",
     description:
-      "Describe who's starting or leaving and the agent works through a simulated directory: accounts, licenses, groups, hardware, tasks for Desktop Support and an email for the manager. Payroll and HR access wait for approval, admin and production access are refused in code, and every change lands in an audit log.",
+      "You describe who's starting or leaving, and the agent works through a mock company directory. It handles accounts, licenses, groups, a laptop request for Desktop Support and an email to the manager. Payroll and HR access need approval, admin and production access are blocked in the code, and every change is logged.",
     stack: ["Next.js", "TypeScript", "Claude API", "Tool use", "Human-in-the-loop"],
     image: {
       src: onboardingShot,
@@ -84,9 +84,9 @@ export const projects: Project[] = [
   {
     name: "AI Helpdesk Assistant",
     meta: "Claude API, 2026",
-    tagline: "Turns a plain-words complaint into a triaged ticket with fixes from real runbooks.",
+    tagline: "Turns a complaint written in plain words into a ticket, with fixes from real runbooks.",
     description:
-      "It sets priority and category, searches a knowledge base of help desk runbooks with BM25, walks the user through safe self-service steps, and escalates to the right team with a handoff note. Phishing and compromised accounts go straight to Security as P1.",
+      "It sets the priority and category, searches a small knowledge base of help desk runbooks, and walks the user through the fixes they can safely do on their own. Anything else goes to the right team with a handoff note. Phishing and hacked accounts go straight to Security as P1.",
     stack: ["Next.js", "TypeScript", "Claude API", "Structured outputs", "Retrieval"],
     image: {
       src: helpdeskShot,
@@ -101,17 +101,17 @@ export const projects: Project[] = [
     meta: "React Native, 2026",
     tagline: "The iPhone app my wife and I use to keep our dog's walks and meals in sync.",
     description:
-      "We work different shifts, so one tap logs that Griffin was walked or fed, morning and evening, and it resets every day. My first app, and the reason I started building.",
+      "We work different shifts, so one tap logs that Griffin was walked or fed, morning and evening, and it resets every day. It was my first app, and it's why I started building.",
     stack: ["React Native", "Expo", "TypeScript"],
   },
 ];
 
 export const experience: { company: string; detail?: string; title: string; period?: string }[] = [
-  { company: "Samsung Austin Semiconductor", title: "Help Desk Support Technician", period: "2026 – now" },
+  { company: "Samsung Austin Semiconductor", title: "Help Desk Support Technician", period: "2026 - now" },
   { company: "Capgemini", detail: "Progressive Insurance", title: "IT Support Specialist", period: "2024" },
   { company: "GTS Technology Solutions", detail: "Round Rock ISD and Austin ISD", title: "Field Deployment Technician" },
-  { company: "Manpower", detail: "Peru", title: "IT Support Specialist", period: "2021 – 2022" },
-  { company: "Sapia", detail: "Supermercados Peruanos", title: "IT Support Specialist", period: "2017 – 2021" },
+  { company: "Manpower", detail: "Peru", title: "IT Support Specialist", period: "2021 - 2022" },
+  { company: "Sapia", detail: "Supermercados Peruanos", title: "IT Support Specialist", period: "2017 - 2021" },
 ];
 
 export const education = {

@@ -13,7 +13,7 @@ function ProjectCard({ project }: { project: Project }) {
             {href ? <a href={href}>{project.name}</a> : project.name}
           </h3>
           <p className={styles.projectMeta}>
-            <strong>{project.meta}</strong> — {project.tagline}
+            <strong>{project.meta}.</strong> {project.tagline}
           </p>
         </div>
         {href && (

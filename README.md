@@ -1,4 +1,4 @@
-# Anthony Jaimez — Portfolio
+# Anthony Jaimez, Portfolio
 
 Personal site for Anthony Jaimez, IT Support Specialist building software with AI.
 
