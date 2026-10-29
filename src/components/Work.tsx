@@ -1,179 +1,194 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import styles from "@/app/page.module.css";
 import { opsLabArchitecture, type Project } from "@/content";
 
+const i = (n: number) => ({ "--i": n }) as CSSProperties;
+
 function Arrow() {
   return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.linkIcon}>
+    <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.arrow}>
       <path d="M5 11 11 5M6 5h5v5" />
     </svg>
   );
 }
 
-export function ProjectLinks({ project, size = "md" }: { project: Project; size?: "md" | "sm" }) {
-  if (!project.demo && !project.source) return null;
+export function Links({ project }: { project: Project }) {
   return (
-    <p className={`${styles.links} ${size === "sm" ? styles.linksSm : ""}`}>
+    <p className={styles.links}>
       {project.demo && (
-        <a href={project.demo} className={styles.btnPrimary} aria-label={`Live demo of ${project.name}`}>
+        <a href={project.demo} className={styles.button} aria-label={`Live demo of ${project.name}`}>
           Live demo <Arrow />
         </a>
       )}
       {project.source && (
-        <a href={project.source} className={styles.btnGhost} aria-label={`Source code of ${project.name} on GitHub`}>
-          Source <Arrow />
+        <a href={project.source} className={styles.textLink} aria-label={`Source code of ${project.name} on GitHub`}>
+          Source on GitHub
         </a>
       )}
     </p>
   );
 }
 
-function Shot({ project, sizes, crop }: { project: Project; sizes: string; crop?: boolean }) {
-  if (!project.image) return null;
-  return (
-    <a href={project.demo ?? project.source} className={styles.shot} tabIndex={-1} aria-hidden="true">
-      <span className={styles.shotBar}>
-        <span />
-        <span />
-        <span />
-        <span className={styles.shotUrl}>{project.image.url}</span>
-      </span>
-      <span className={crop ? styles.shotCrop : styles.shotFull}>
-        <Image src={project.image.src} alt={project.image.alt} sizes={sizes} placeholder="blur" className={styles.shotImg} />
-      </span>
-    </a>
-  );
-}
-
 function Stack({ items }: { items: string[] }) {
-  return (
-    <ul className={styles.stack} aria-label="Technologies">
-      {items.map((t) => (
-        <li key={t}>{t}</li>
-      ))}
-    </ul>
-  );
+  return <p className={styles.stack}>Built with {items.join(", ")}.</p>;
 }
 
-export function Featured({ project }: { project: Project }) {
+/** Agent Ops Lab: two figures compared, the full screenshot, then how it works. */
+export function LabShowcase({ project }: { project: Project }) {
   return (
-    <article className={styles.featured} aria-labelledby="featured-title">
-      <header className={styles.featuredHead}>
-        <div>
-          <p className={styles.eyebrow}>
-            <span className={styles.eyebrowDot} aria-hidden="true" />
-            Featured project, {project.meta}
-          </p>
-          <h3 id="featured-title" className={styles.featuredName}>
-            {project.name}
-          </h3>
-          <p className={styles.featuredTagline}>{project.tagline}</p>
-        </div>
-        <ProjectLinks project={project} />
-      </header>
-
-      <div className={styles.featuredBody}>
-        <Shot project={project} sizes="(max-width: 980px) 100vw, 760px" />
-
-        <div className={styles.featuredSide}>
-          <h4 className={styles.miniTitle}>How an incident runs</h4>
-          <ol className={styles.sequence}>
-            {project.steps?.map((s, i) => (
-              <li key={s.label}>
-                <span className={styles.seqNum}>{String(i + 1).padStart(2, "0")}</span>
-                <span>
-                  <strong>{s.label}</strong>
-                  <span className={styles.seqDetail}>{s.detail}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
-          {project.proof && <p className={styles.proof}>{project.proof}</p>}
-        </div>
-      </div>
-
-      <div className={styles.featuredFoot}>
-        <div className={styles.featuredText}>
-          <p>{project.description}</p>
-          <Stack items={project.stack} />
-        </div>
-        <figure className={styles.arch} aria-labelledby="arch-caption">
-          <figcaption id="arch-caption" className={styles.miniTitle}>
-            What runs where
-          </figcaption>
-          <ol className={styles.archList}>
-            {opsLabArchitecture.map((n) => (
-              <li key={n.name}>
-                <strong>{n.name}</strong>
-                <span>{n.detail}</span>
-                {n.items && (
-                  <span className={styles.archItems}>
-                    {n.items.map((i) => (
-                      <code key={i}>{i}</code>
-                    ))}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ol>
-          <p className={styles.archNote}>A demo lab I run for this portfolio, not a production system.</p>
-        </figure>
-      </div>
-    </article>
-  );
-}
-
-export function ProjectRow({ project, index }: { project: Project; index: number }) {
-  return (
-    <article className={styles.row} aria-labelledby={`project-${index}`}>
-      <Shot project={project} sizes="(max-width: 980px) 100vw, 520px" crop />
-      <div className={styles.rowBody}>
-        <p className={styles.rowMeta}>{project.meta}</p>
-        <h3 id={`project-${index}`} className={styles.rowName}>
+    <article className={styles.lab} aria-labelledby="lab-title">
+      <div className={styles.labTop}>
+        <h3 id="lab-title" className={styles.labName} data-reveal="">
           {project.name}
         </h3>
-        <p className={styles.rowTagline}>{project.tagline}</p>
-        {project.steps && (
-          <ol className={styles.flow} aria-label="How it works">
-            {project.steps.map((s) => (
-              <li key={s.label}>
-                <strong>{s.label}</strong>
-                <span>{s.detail}</span>
-              </li>
-            ))}
-          </ol>
-        )}
-        <p className={styles.rowDesc}>{project.description}</p>
-        {project.guard && (
-          <p className={styles.guard}>
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M8 1.5 13.5 3.5v4c0 3.2-2.3 5.8-5.5 7-3.2-1.2-5.5-3.8-5.5-7v-4L8 1.5Z" />
-            </svg>
-            {project.guard}
-          </p>
-        )}
-        {project.proof && <p className={styles.proof}>{project.proof}</p>}
-        <div className={styles.rowFoot}>
+        <div className={styles.labIntro} data-reveal="" style={i(1)}>
+          <p className={styles.lead}>{project.tagline}</p>
+        </div>
+      </div>
+
+      <div className={styles.specimens}>
+        <figure className={styles.specimen} data-reveal="" style={i(0)}>
+          <figcaption>Outages fixed, tested with Haiku, Sonnet and Opus</figcaption>
+          <span className={styles.specimenFigure}>15/15</span>
+        </figure>
+        <figure className={`${styles.specimen} ${styles.specimenAlt}`} data-reveal="" style={i(2)}>
+          <figcaption>Fake instructions the agent followed</figcaption>
+          <span className={styles.specimenFigure}>0</span>
+        </figure>
+      </div>
+      {project.proof && <p className={styles.srOnly}>{project.proof}</p>}
+
+      {project.image && (
+        <figure className={styles.labShot}>
+          <a href={project.demo} className={styles.shutterFrame} data-shutter="" tabIndex={-1} aria-hidden="true">
+            <Image src={project.image.src} alt={project.image.alt} sizes="100vw" placeholder="blur" className={styles.labShotImg} />
+          </a>
+          <figcaption className={styles.caption}>
+            {project.image.alt} {project.image.url}
+          </figcaption>
+        </figure>
+      )}
+
+      <div className={styles.stepsBlock}>
+        <h4 className={styles.smallHead} data-reveal="">
+          How an incident runs
+        </h4>
+        <ol className={styles.steps}>
+          {project.steps?.map((s, n) => (
+            <li key={s.label} data-reveal="" style={i(n)}>
+              <span className={styles.stepName}>{s.label}</span>
+              <span className={styles.stepDetail}>{s.detail}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div className={styles.labFoot}>
+        <div className={styles.labText} data-reveal="">
+          <p className={styles.blockMeta}>{project.meta}</p>
+          <p>{project.description}</p>
           <Stack items={project.stack} />
-          <ProjectLinks project={project} size="sm" />
+          <Links project={project} />
+        </div>
+        <div className={styles.arch} data-reveal="" style={i(1)}>
+          <h4 className={styles.smallHead}>What runs where</h4>
+          <table className={styles.archTable}>
+            <tbody>
+              {opsLabArchitecture.map((n) => (
+                <tr key={n.name}>
+                  <th scope="row">{n.name}</th>
+                  <td>
+                    {n.detail}
+                    {n.items && (
+                      <>
+                        {": "}
+                        {n.items.map((it, k) => (
+                          <span key={it}>
+                            <code>{it}</code>
+                            {k < n.items!.length - 1 ? ", " : ""}
+                          </span>
+                        ))}
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p className={styles.note}>A demo lab I run for this portfolio, not a production system.</p>
         </div>
       </div>
     </article>
   );
 }
 
-export function PersonalProject({ project }: { project: Project }) {
+const DETAIL: Record<string, { pos: string; height: string }> = {
+  "AI Incident Responder": { pos: "38% 34%", height: "80svh" },
+  "IT Onboarding Agent": { pos: "18% 68%", height: "62svh" },
+  "AI Helpdesk Assistant": { pos: "62% 40%", height: "88svh" },
+};
+
+/** One project: an oversized detail of its interface, and a small cluster with the whole screen and the facts. */
+export function ProjectBlock({ project, index }: { project: Project; index: number }) {
+  const d = DETAIL[project.name] ?? { pos: "50% 30%", height: "80svh" };
   return (
-    <article className={styles.personal} aria-labelledby="personal-title">
-      <p className={styles.rowMeta}>Personal project, {project.meta}</p>
-      <div className={styles.personalBody}>
-        <div>
-          <h3 id="personal-title" className={styles.personalName}>
+    <article className={styles.block} aria-labelledby={`project-${index}`}>
+      {project.image && (
+        <div className={styles.blockVisual} style={{ "--h": d.height } as CSSProperties} aria-hidden="true">
+          <Image
+            src={project.image.src}
+            alt=""
+            sizes="(max-width: 900px) 110vw, 65vw"
+            className={styles.blockVisualImg}
+            style={{ objectPosition: d.pos }}
+          />
+        </div>
+      )}
+      <div className={styles.cluster}>
+        {project.image && (
+          <a href={project.demo} className={styles.clusterShot} data-reveal="" tabIndex={-1} aria-hidden="true">
+            <Image src={project.image.src} alt={project.image.alt} sizes="(max-width: 900px) 70vw, 30vw" placeholder="blur" className={styles.clusterImg} />
+          </a>
+        )}
+        <div className={styles.clusterHead} data-reveal="" style={i(1)}>
+          <h3 id={`project-${index}`} className={styles.blockName}>
             {project.name}
           </h3>
-          <p className={styles.rowTagline}>{project.tagline}</p>
+          <p className={styles.blockMeta}>{project.meta}</p>
         </div>
-        <p className={styles.rowDesc}>{project.description}</p>
+        <div className={styles.clusterText} data-reveal="" style={i(2)}>
+          <p className={styles.blockTagline}>{project.tagline}</p>
+          <p>{project.description}</p>
+          {project.steps && (
+            <ol className={styles.flow} aria-label="How it works">
+              {project.steps.map((s) => (
+                <li key={s.label}>
+                  <strong>{s.label}.</strong> {s.detail}
+                </li>
+              ))}
+            </ol>
+          )}
+          {project.guard && <p className={styles.guard}>{project.guard}</p>}
+          {project.proof && <p className={styles.guard}>{project.proof}</p>}
+          <Stack items={project.stack} />
+          <Links project={project} />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+export function PersonalBlock({ project }: { project: Project }) {
+  return (
+    <article className={styles.personal} aria-labelledby="personal-title">
+      <h3 id="personal-title" className={styles.personalName} data-reveal="">
+        {project.name}
+      </h3>
+      <div className={styles.personalText} data-reveal="" style={i(1)}>
+        <p className={styles.blockMeta}>Personal project, {project.meta}</p>
+        <p className={styles.blockTagline}>{project.tagline}</p>
+        <p>{project.description}</p>
         <Stack items={project.stack} />
       </div>
     </article>

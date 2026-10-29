@@ -1,211 +1,248 @@
+import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
 import styles from "./page.module.css";
-import Nav from "@/components/Nav";
-import { Featured, PersonalProject, ProjectRow } from "@/components/Work";
+import LabStatus from "@/components/LabStatus";
+import Reveal from "@/components/Reveal";
+import { LabShowcase, PersonalBlock, ProjectBlock } from "@/components/Work";
 import { experience, profile, projects, skills } from "@/content";
 
+const MARKS: [string, string][] = [
+  ["more than five years", styles.mark1],
+  ["since 2017", styles.mark2],
+  ["Peru", styles.mark3],
+  ["Capgemini", styles.mark1],
+  ["Round Rock ISD", styles.mark2],
+  ["Samsung's semiconductor plant in Austin", styles.mark3],
+  ["wait for a person", styles.mark1],
+];
+
+/** Wraps the listed phrases in highlighter marks, leaving the text itself unchanged. */
+function highlight(text: string): ReactNode[] {
+  const out: ReactNode[] = [];
+  let rest = text;
+  let key = 0;
+  while (rest) {
+    let best: { at: number; phrase: string; cls: string } | null = null;
+    for (const [phrase, cls] of MARKS) {
+      const at = rest.indexOf(phrase);
+      if (at >= 0 && (!best || at < best.at)) best = { at, phrase, cls };
+    }
+    if (!best) {
+      out.push(rest);
+      break;
+    }
+    if (best.at > 0) out.push(rest.slice(0, best.at));
+    out.push(
+      <mark key={key++} className={best.cls}>
+        {best.phrase}
+      </mark>,
+    );
+    rest = rest.slice(best.at + best.phrase.length);
+  }
+  return out;
+}
+
+const i = (n: number) => ({ "--i": n }) as CSSProperties;
+
 export default function Home() {
-  const featured = projects.filter((p) => p.kind === "featured");
+  const featured = projects.find((p) => p.kind === "featured");
   const main = projects.filter((p) => p.kind === "main");
   const personal = projects.filter((p) => p.kind === "personal");
+  const about = [profile.heroIntro, ...profile.about];
+  const closing = about.pop() ?? "";
 
   return (
-    <div className={styles.page}>
+    <>
+      <Reveal />
       <a href="#work" className={styles.skip}>
         Skip to projects
       </a>
 
-      <header className={styles.top}>
-        <a href="#top" className={styles.id}>
-          <span className={styles.idName}>{profile.name}</span>
-          <span className={styles.idTitle}>{profile.title}</span>
-        </a>
-        <Nav />
-        <p className={styles.topLinks}>
-          <a href={profile.github}>GitHub</a>
-          <a href={profile.linkedin}>LinkedIn</a>
-        </p>
-      </header>
-
-      <main id="top">
-        <section className={styles.hero} aria-labelledby="hero-title">
-          <div className={styles.heroMain}>
-            <p className={styles.status}>
-              <span className={styles.statusDot} aria-hidden="true" />
-              Open to remote roles in AI and IT
-            </p>
-            <h1 id="hero-title" className={styles.heroTitle}>
-              I solve IT problems,
-              <br />
-              and build AI that
-              <br />
-              <em>solves them too.</em>
-            </h1>
-            <p className={styles.heroLead}>
-              {profile.heroIntro}
-            </p>
-            <p className={styles.heroActions}>
-              <a href="#work" className={styles.btnPrimary}>
-                Explore projects
-                <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.linkIcon}>
-                  <path d="M8 3v10M4 9l4 4 4-4" />
+      <header className={styles.hero} id="top">
+        <div className={styles.heroCornerTL}>
+          <p className={styles.heroSentence}>I solve IT problems, and build AI that solves them too.</p>
+          {featured?.demo && (
+            <p className={styles.heroAction}>
+              <a href={featured.demo} className={styles.button}>
+                Live demo of {featured.name}
+                <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.arrow}>
+                  <path d="M5 11 11 5M6 5h5v5" />
                 </svg>
               </a>
-              <a href={profile.resume} className={styles.btnGhost} target="_blank" rel="noopener">
-                Resume <span className={styles.btnNote}>PDF</span>
-              </a>
-              <a href={profile.github} className={styles.btnText}>
-                GitHub
-              </a>
-              <a href={profile.linkedin} className={styles.btnText}>
-                LinkedIn
-              </a>
             </p>
+          )}
+          <LabStatus />
+        </div>
+
+        <nav className={styles.heroCornerTR} aria-label="Sections">
+          <a href="#work">Work</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <h1 className={styles.name}>
+          <span className={styles.nameInner}>{profile.name}</span>
+        </h1>
+
+        <p className={styles.heroCornerBL}>
+          {profile.title}, {profile.location}
+        </p>
+
+        <p className={styles.heroCornerBR}>
+          <a href={profile.github}>GitHub</a>
+          <a href={profile.linkedin}>LinkedIn</a>
+          <a href={profile.resume} target="_blank" rel="noopener">
+            Resume PDF
+          </a>
+        </p>
+
+        {featured?.image && (
+          <div className={styles.heroPhoneShot} aria-hidden="true">
+            <Image src={featured.image.src} alt="" sizes="100vw" priority className={styles.heroPhoneImg} />
           </div>
+        )}
+      </header>
 
-          <dl className={styles.facts} aria-label="At a glance">
-            <div>
-              <dt>Now</dt>
-              <dd>
-                {experience[0].title}, {experience[0].company}
-              </dd>
-            </div>
-            <div>
-              <dt>Experience</dt>
-              <dd>5+ years of enterprise IT support</dd>
-            </div>
-            <div>
-              <dt>Building</dt>
-              <dd>AI agents for IT operations, with approvals and audit logs</dd>
-            </div>
-            <div>
-              <dt>Based in</dt>
-              <dd>{profile.location}</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section id="work" className={styles.section} aria-labelledby="work-title">
-          <header className={styles.sectionHead}>
-            <h2 id="work-title" className={styles.sectionTitle}>
+      <main>
+        <section id="work" className={styles.work} aria-labelledby="work-title">
+          <header className={styles.workHead}>
+            <h2 id="work-title" className={styles.sectionTitle} data-reveal="">
               Selected work
             </h2>
-            <p className={styles.sectionNote}>{projects.length} projects, 2026</p>
           </header>
 
-          {featured.map((p) => (
-            <Featured key={p.name} project={p} />
-          ))}
+          {featured && <LabShowcase project={featured} />}
 
-          <div className={styles.rows}>
-            {main.map((p, i) => (
-              <ProjectRow key={p.name} project={p} index={i} />
+          <div className={styles.blocks}>
+            {main.map((p, n) => (
+              <ProjectBlock key={p.name} project={p} index={n} />
             ))}
           </div>
 
           {personal.map((p) => (
-            <PersonalProject key={p.name} project={p} />
+            <PersonalBlock key={p.name} project={p} />
           ))}
         </section>
 
-        <section id="about" className={styles.section} aria-labelledby="about-title">
-          <header className={styles.sectionHead}>
-            <h2 id="about-title" className={styles.sectionTitle}>
-              About
-            </h2>
-          </header>
-
-          <div className={styles.about}>
-            <div className={styles.aboutText}>
-              {profile.about.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-
-            <div className={styles.aboutSide}>
-              <section aria-labelledby="exp-title">
-                <h3 id="exp-title" className={styles.miniTitle}>
-                  Experience
-                </h3>
-                <ol className={styles.timeline}>
-                  {experience.map((job) => (
-                    <li key={job.company}>
-                      <span className={styles.when}>{job.period}</span>
-                      <span>
-                        <strong className={styles.role}>{job.title}</strong>
-                        <span className={styles.org}>
-                          {job.company}
-                          {job.detail && `, ${job.detail}`}
-                        </span>
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              </section>
-
-            </div>
+        <section id="about" className={styles.about} aria-labelledby="about-title">
+          <h2 id="about-title" className={styles.sectionTitle} data-reveal="">
+            About
+          </h2>
+          <div className={styles.aboutText} data-reveal="" style={i(1)}>
+            {about.map((p) => (
+              <p key={p}>{highlight(p)}</p>
+            ))}
+            <p>
+              <a href="#contact" className={styles.closing}>
+                {closing}
+              </a>
+            </p>
           </div>
+        </section>
 
-          <section className={styles.skillsBlock} aria-labelledby="skills-title">
-            <h3 id="skills-title" className={styles.miniTitle}>
-              Skills
-            </h3>
-            <dl className={styles.skills}>
-              {skills.map((g) => (
-                <div key={g.group}>
-                  <dt>{g.group}</dt>
-                  <dd>
-                    <ul>
-                      {g.items.map((s) => (
-                        <li key={s}>{s}</li>
-                      ))}
-                    </ul>
-                  </dd>
-                </div>
+        <section className={styles.lineup} aria-labelledby="exp-title">
+          <h2 id="exp-title" className={styles.lineupHead} data-reveal="">
+            Experience
+          </h2>
+          <table className={styles.lineupTable} data-reveal="" style={i(1)}>
+            <thead className={styles.srOnly}>
+              <tr>
+                <th scope="col">Role</th>
+                <th scope="col">Company</th>
+                <th scope="col">Client or place</th>
+                <th scope="col">Years</th>
+              </tr>
+            </thead>
+            <tbody>
+              {experience.map((job) => (
+                <tr key={job.company}>
+                  <td className={styles.lineupRole}>{job.title}</td>
+                  <td>{job.company}</td>
+                  <td>{job.detail ?? ""}</td>
+                  <td className={styles.lineupYears}>{job.period}</td>
+                </tr>
               ))}
-            </dl>
-          </section>
+            </tbody>
+          </table>
+
+          <h2 id="skills-title" className={styles.lineupHead}>
+            Skills
+          </h2>
+          <table className={styles.lineupTable} aria-labelledby="skills-title">
+            <tbody>
+              {skills.map((g) => (
+                <tr key={g.group}>
+                  <th scope="row" className={styles.lineupRole}>
+                    {g.group}
+                  </th>
+                  <td colSpan={3}>{g.items.join(", ")}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </section>
 
         <section id="contact" className={styles.contact} aria-labelledby="contact-title">
-          <div>
-            <h2 id="contact-title" className={styles.contactTitle}>
+          <div className={styles.contactRow}>
+            <h2 id="contact-title" className={styles.contactGreeting}>
               Let&apos;s talk.
             </h2>
-            <p className={styles.contactText}>
-              Email works best. I&apos;m open to remote roles in AI and IT.
-            </p>
+            <a href={`mailto:${profile.email}`} className={styles.contactButton} aria-label={`Email ${profile.email}`}>
+              <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.arrow}>
+                <path d="M5 11 11 5M6 5h5v5" />
+              </svg>
+            </a>
+            <p className={styles.contactNote}>Email works best. I&apos;m open to remote roles in AI and IT.</p>
           </div>
-          <ul className={styles.contactList}>
-            <li>
-              <span>Email</span>
-              <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            </li>
-            <li>
-              <span>LinkedIn</span>
-              <a href={profile.linkedin}>linkedin.com/in/anthonyjaimez</a>
-            </li>
-            <li>
-              <span>GitHub</span>
-              <a href={profile.github}>github.com/gkitad</a>
-            </li>
-            <li>
-              <span>Resume</span>
-              <a href={profile.resume} target="_blank" rel="noopener">
-                Anthony_Jaimez_Resume.pdf
-              </a>
-            </li>
-          </ul>
+          <a href={`mailto:${profile.email}`} className={styles.contactRow}>
+            {profile.email}
+          </a>
+          <a href={profile.linkedin} className={styles.contactRow}>
+            linkedin.com/in/anthonyjaimez
+          </a>
+          <a href={profile.github} className={styles.contactRow}>
+            github.com/gkitad
+          </a>
+          <a href={profile.resume} className={styles.contactRow} target="_blank" rel="noopener">
+            Anthony_Jaimez_Resume.pdf
+          </a>
         </section>
       </main>
 
       <footer className={styles.footer}>
-        <p>
-          © 2026 {profile.name}. {profile.location}.
-        </p>
-        <p>
-          Built with Next.js and deployed on Vercel. <a href="https://github.com/gkitad/portfolio">Source</a>
+        <div className={styles.footerTop}>
+          <div>
+            <p className={styles.invite}>Open to remote roles in AI and IT.</p>
+            <p>
+              <a href={profile.resume} className={styles.buttonInverse} target="_blank" rel="noopener">
+                Resume PDF
+              </a>
+            </p>
+          </div>
+          <ul className={styles.footerLinks}>
+            <li>
+              <a href={`mailto:${profile.email}`}>Email</a>
+            </li>
+            <li>
+              <a href={profile.linkedin}>LinkedIn</a>
+            </li>
+            <li>
+              <a href={profile.github}>GitHub</a>
+            </li>
+          </ul>
+        </div>
+        <div className={styles.legal}>
+          <p>
+            © 2026 {profile.name}. {profile.location}.
+          </p>
+          <p>
+            Built with Next.js and deployed on Vercel. <a href="https://github.com/gkitad/portfolio">Source</a>
+          </p>
+        </div>
+        <p className={styles.wordmark} aria-hidden="true">
+          {profile.name}
         </p>
       </footer>
-    </div>
+    </>
   );
 }

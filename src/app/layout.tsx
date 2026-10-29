@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "@fontsource-variable/instrument-sans/wght.css";
-import "@fontsource/instrument-serif/400-italic.css";
+import "@fontsource/anton/400.css";
+import "@fontsource-variable/work-sans/wght.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +16,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
       <body>{children}</body>
     </html>
   );
