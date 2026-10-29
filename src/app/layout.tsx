@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@fontsource-variable/archivo/wdth.css";
 import "./globals.css";
+import Track from "@/components/Track";
 
 export const metadata: Metadata = {
   title: "Anthony Jaimez | IT Support & AI",
@@ -16,7 +17,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Track />
+      </body>
     </html>
   );
 }

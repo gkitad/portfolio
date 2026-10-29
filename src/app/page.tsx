@@ -239,6 +239,7 @@ export default function Home() {
             <p>
               Built with Next.js and deployed on Vercel. <a href="https://github.com/gkitad/portfolio">Source</a>
             </p>
+            <p>This site counts visits by city and network name. No cookies, and IP addresses aren&apos;t stored.</p>
             </div>
           </footer>
         </section>
