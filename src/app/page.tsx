@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import Nav from "@/components/Nav";
 import { Featured, PersonalProject, ProjectRow } from "@/components/Work";
-import { education, experience, profile, projects, skills } from "@/content";
+import { experience, profile, projects, skills } from "@/content";
 
 export default function Home() {
   const featured = projects.filter((p) => p.kind === "featured");
@@ -126,7 +126,7 @@ export default function Home() {
                 <ol className={styles.timeline}>
                   {experience.map((job) => (
                     <li key={job.company}>
-                      <span className={styles.when}>{job.period ?? ""}</span>
+                      <span className={styles.when}>{job.period}</span>
                       <span>
                         <strong className={styles.role}>{job.title}</strong>
                         <span className={styles.org}>
@@ -139,20 +139,6 @@ export default function Home() {
                 </ol>
               </section>
 
-              <section aria-labelledby="edu-title">
-                <h3 id="edu-title" className={styles.miniTitle}>
-                  Education
-                </h3>
-                <ol className={styles.timeline}>
-                  <li>
-                    <span className={styles.when}>{education.year}</span>
-                    <span>
-                      <strong className={styles.role}>{education.degree}</strong>
-                      <span className={styles.org}>{education.school}</span>
-                    </span>
-                  </li>
-                </ol>
-              </section>
             </div>
           </div>
 

@@ -16,8 +16,9 @@ export const profile = {
   heroIntro:
     "I've spent more than five years on enterprise help desks. I build AI tools that troubleshoot the way I do. They check the evidence first and ask before changing anything.",
   about: [
-    "I've worked enterprise help desks for more than five years. I supported the headquarters of a supermarket chain in Peru, an insurance client through Capgemini, school districts around Round Rock and Austin, and now a semiconductor fab.",
-    "Most tickets start with something vague like \"it's not working,\" and the real cause is usually somewhere else. So I started building AI tools that troubleshoot the way I do. They look at the evidence first and ask before changing anything. I'm looking for a role where I can keep doing both.",
+    "I've been in IT support since 2017. I started at the headquarters of a supermarket chain in Peru, then supported an insurance company through Capgemini, set up devices for Round Rock ISD schools, and now work the help desk at Samsung's semiconductor plant in Austin.",
+    "Most of the job is figuring out what's really wrong, because it's rarely what the first ticket says. That's what my AI projects do too. They read the logs, run the checks and wait for a person before they change anything.",
+    "I'm looking for a remote role where I can keep doing both: helping people with their tech and building tools that make that work faster.",
   ],
 };
 
@@ -158,19 +159,14 @@ export const projects: Project[] = [
   },
 ];
 
-export const experience: { company: string; detail?: string; title: string; period?: string }[] = [
-  { company: "Samsung Austin Semiconductor", title: "Help Desk Support Technician", period: "2026 - now" },
-  { company: "Capgemini", detail: "Progressive Insurance", title: "IT Support Specialist", period: "2024" },
-  { company: "GTS Technology Solutions", detail: "Round Rock ISD and Austin ISD", title: "Field Deployment Technician" },
-  { company: "Manpower", detail: "Peru", title: "IT Support Specialist", period: "2021 - 2022" },
-  { company: "Sapia", detail: "Supermercados Peruanos", title: "IT Support Specialist", period: "2017 - 2021" },
+export const experience: { company: string; detail?: string; title: string; period: string }[] = [
+  { company: "Samsung Austin Semiconductor", title: "IT Help Desk Support Technician", period: "2026 - now" },
+  { company: "GTS Technology Solutions", detail: "Round Rock ISD", title: "Field Deployment Technician", period: "2026" },
+  { company: "Capgemini", detail: "Progressive Insurance", title: "IT Support Technician, Tier 1 and 2", period: "2024" },
+  { company: "Manpower", detail: "Peru", title: "Incident Management Specialist", period: "2021 - 2022" },
+  { company: "Sapia", detail: "Supermercados Peruanos", title: "Second Level Support Analyst", period: "2017 - 2021" },
 ];
 
-export const education = {
-  degree: "B.S. in Computer Science",
-  school: "IUT “Tomás Lander”, Venezuela",
-  year: "2016",
-};
 
 export const skills: { group: string; items: string[] }[] = [
   { group: "IT support and troubleshooting", items: ["Windows & macOS support", "Hardware deployment & imaging", "Ticketing & SLAs"] },
