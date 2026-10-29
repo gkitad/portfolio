@@ -92,7 +92,7 @@ Density is that of a working form: fields sit edge to edge in ruled boxes, and s
 Office carbonless paper and a single print colour.
 
 ### Primary
-- **Form Print Blue** (#1f3c9c): rules, field labels, section bars, links, primary buttons, focus rings and text selection.
+- **Form Print Blue** (#1f3c9c): box rules, section bars, links, buttons, navigation, focus rings and text selection.
 
 ### Tertiary
 - **Stamp Red** (#cf232c): the APPROVED stamp only.
@@ -103,10 +103,10 @@ Office carbonless paper and a single print colour.
 - **Pink Copy** (#ffd8e2): the about section.
 - **Goldenrod File Copy** (#f6c95a): contact and footer.
 - **Typed Ink** (#13151b): all entries and body text.
-- **Soft Ink** (#3a3d47): secondary detail lines inside fields.
+- **Soft Ink** (#3a3d47): field labels, tech tags, dates and secondary detail lines.
 
 ### Named Rules
-**The One Print Colour Rule.** Anything that belongs to the form (rules, labels, bars, controls) is Form Print Blue. Anything that belongs to the person (names, sentences, results) is Typed Ink. Nothing else gets a colour except the stamp.
+**The Blue Means Act Rule.** Form Print Blue is for the form's structure (box rules, section bars) and for anything a visitor can click. Field labels, box titles, tech tags and dates are Soft Ink or Typed Ink, so a label never looks like a link. Nothing else gets a colour except the stamp.
 
 **The Whole Sheet Rule.** A sheet colour owns its whole section from edge to edge. Never use a sheet colour as a small accent or a card fill.
 
@@ -121,7 +121,7 @@ Office carbonless paper and a single print colour.
 - **Headline** (820, clamp(1.7rem, 2.8vw, 2.5rem), 1): project names in records.
 - **Title** (800, clamp(1.6rem, 3vw, 2.5rem), uppercase, width 82%): section bar headings.
 - **Body** (400, 1.0625rem, 1.55): paragraphs, kept under 68ch.
-- **Label** (650, 0.78rem, 0.025em, uppercase, width 78%): field labels printed on the form. Box titles use the same voice at 0.85rem, weight 750.
+- **Label** (650, 0.78rem, 0.025em, uppercase, width 78%, Soft Ink): field labels. Box titles use the same voice at 0.85rem, weight 750, in Typed Ink.
 
 ### Named Rules
 **The Label Is a Field Rule.** Uppercase labels name a field's value. They never sit above a heading.
@@ -148,7 +148,7 @@ Square corners on everything, including buttons, chips and attachments. Boxes ar
 - **Text:** underlined print-blue link.
 
 ### Fields
-- **Style:** ruled cell, label on top in the label voice, value in Typed Ink at weight 560.
+- **Style:** ruled cell, label on top in the label voice (Soft Ink), value in Typed Ink at weight 560.
 
 ### Section bar
 - **Style:** full-bleed print-blue band with the section title in white, uppercase condensed, and an optional note on the right.
@@ -167,7 +167,7 @@ Square corners on everything, including buttons, chips and attachments. Boxes ar
 ### Do:
 - **Do** give every new section its own sheet colour from the set and a print-blue section bar.
 - **Do** frame real screenshots as attachments with their URL.
-- **Do** keep values typed in ink and the form printed in blue.
+- **Do** keep text in ink and save the blue for structure and actions.
 
 ### Don't:
 - **Don't** add shadows, gradients or rounded cards.
