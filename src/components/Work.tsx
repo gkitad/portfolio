@@ -86,7 +86,14 @@ export function Featured({ project }: { project: Project }) {
       </header>
 
       <div className={styles.recordBody}>
-        <Shot project={project} sizes="(max-width: 980px) 100vw, 760px" />
+        <div className={styles.recordMain}>
+          <Shot project={project} sizes="(max-width: 980px) 100vw, 760px" />
+          <div className={styles.recordText}>
+            <span className={styles.label}>Description</span>
+            <p>{project.description}</p>
+            <Stack items={project.stack} />
+          </div>
+        </div>
 
         <div className={styles.workflow}>
           <h4 className={styles.boxTitle}>How an incident runs</h4>
@@ -113,11 +120,6 @@ export function Featured({ project }: { project: Project }) {
       </div>
 
       <div className={styles.recordFoot}>
-        <div className={styles.recordText}>
-          <span className={styles.label}>Description</span>
-          <p>{project.description}</p>
-          <Stack items={project.stack} />
-        </div>
         <figure className={styles.arch} aria-labelledby="arch-caption">
           <figcaption id="arch-caption" className={styles.boxTitle}>
             What runs where

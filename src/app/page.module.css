@@ -451,8 +451,12 @@
 
 /* Featured project: the main change record */
 
-.record {
+.record,
+.row,
+.personal {
+  background: var(--sheet-white);
   border: var(--box);
+  border-top: 8px solid var(--ink);
 }
 
 .recordHead {
@@ -507,9 +511,13 @@
   border-bottom: var(--box);
 }
 
-.recordBody > .attach {
-  align-self: start;
-  margin: clamp(16px, 2vw, 24px);
+.recordMain {
+  display: grid;
+  align-content: start;
+}
+
+.recordMain > .attach {
+  margin: clamp(16px, 2vw, 24px) clamp(16px, 2vw, 24px) 0;
 }
 
 .workflow {
@@ -521,9 +529,8 @@
 .boxTitle {
   display: block;
   padding: 10px 16px;
-  background: var(--print-faint);
-  border-bottom: var(--box);
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--sheet-white);
   font-size: 0.85rem;
   font-weight: 750;
   font-stretch: 80%;
@@ -623,8 +630,7 @@
 }
 
 .recordFoot {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  display: block;
 }
 
 .recordText {
@@ -639,7 +645,7 @@
 }
 
 .arch {
-  border-left: var(--box);
+  border-left: 0;
 }
 
 .archTable {
@@ -712,8 +718,8 @@
 
 .rows {
   display: grid;
-  gap: clamp(28px, 4vw, 48px);
-  margin-top: clamp(28px, 4vw, 48px);
+  gap: clamp(48px, 6vw, 88px);
+  margin-top: clamp(48px, 6vw, 88px);
 }
 
 .row {
@@ -721,7 +727,6 @@
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   gap: clamp(20px, 3vw, 40px);
   padding: clamp(16px, 2vw, 24px);
-  border: var(--box);
 }
 
 .row > .attach {
@@ -815,10 +820,8 @@
 .personal {
   display: grid;
   gap: 12px;
-  margin-top: clamp(28px, 4vw, 48px);
+  margin-top: clamp(48px, 6vw, 88px);
   padding: clamp(16px, 2vw, 24px);
-  border: var(--box);
-  border-style: dashed;
 }
 
 .personalHead {
