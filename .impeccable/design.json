@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-29T19:45:00Z",
+  "title": "Design System: Anthony Jaimez Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "print-blue": { "role": "primary", "displayName": "Form Print Blue", "canonical": "#1f3c9c" },
+      "stamp-red": { "role": "tertiary", "displayName": "Stamp Red", "canonical": "#cf232c" },
+      "sheet-white": { "role": "neutral", "displayName": "Original White", "canonical": "#ffffff" },
+      "sheet-canary": { "role": "neutral", "displayName": "Canary Copy", "canonical": "#fff0a3" },
+      "sheet-pink": { "role": "neutral", "displayName": "Pink Copy", "canonical": "#ffd8e2" },
+      "sheet-gold": { "role": "neutral", "displayName": "Goldenrod File Copy", "canonical": "#f6c95a" },
+      "ink": { "role": "neutral", "displayName": "Typed Ink", "canonical": "#13151b" },
+      "ink-soft": { "role": "neutral", "displayName": "Soft Ink", "canonical": "#3a3d47" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero statement, featured project name, contact close." },
+      "headline": { "displayName": "Headline", "purpose": "Project names in records." },
+      "title": { "displayName": "Section bar", "purpose": "Uppercase condensed section headings in the blue bar." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs and typed entries." },
+      "label": { "displayName": "Field label", "purpose": "Printed labels naming a field value." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Stamp press and button state changes." },
+      { "name": "stamp-press", "value": "460ms", "purpose": "The one authored move: the approval stamp lands." }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "560px" },
+      { "name": "tablet", "value": "760px" },
+      { "name": "stack", "value": "1080px" }
+    ]
+  },
+  "components": [
+    { "name": "Primary Button", "kind": "button", "refersTo": "button-primary", "description": "The main action.", "html": "<a class=\"ds-btn-primary\" href=\"#\">Live demo</a>", "css": ".ds-btn-primary{display:inline-flex;align-items:center;min-height:46px;padding:0 22px;background:#1f3c9c;color:#fff;border:1.5px solid #1f3c9c;font-family:'Archivo Variable',sans-serif;font-weight:700;font-stretch:92%;text-decoration:none;transition:background-color .16s}.ds-btn-primary:hover{background:#13151b;border-color:#13151b}.ds-btn-primary:focus-visible{outline:3px solid #1f3c9c;outline-offset:3px}" },
+    { "name": "Ghost Button", "kind": "button", "refersTo": "button-ghost", "description": "Secondary action.", "html": "<a class=\"ds-btn-ghost\" href=\"#\">Source</a>", "css": ".ds-btn-ghost{display:inline-flex;align-items:center;min-height:46px;padding:0 20px;color:#1f3c9c;border:1.5px solid #1f3c9c;font-family:'Archivo Variable',sans-serif;font-weight:700;font-stretch:92%;text-decoration:none}.ds-btn-ghost:hover{background:#1f3c9c;color:#fff}" },
+    { "name": "Field", "kind": "custom", "refersTo": "field", "description": "A ruled form cell: printed label, typed value.", "html": "<div class=\"ds-field\"><span>Based in</span><p>Round Rock, TX</p></div>", "css": ".ds-field{padding:12px 16px;border:1.5px solid #1f3c9c;font-family:'Archivo Variable',sans-serif}.ds-field span{display:block;color:#1f3c9c;font-size:.78rem;font-weight:650;font-stretch:78%;text-transform:uppercase;letter-spacing:.025em}.ds-field p{margin:4px 0 0;color:#13151b;font-weight:560}" },
+    { "name": "Approval Stamp", "kind": "custom", "refersTo": "stamp", "description": "Signature: one per page, on the approval step.", "html": "<span class=\"ds-stamp\">Approved</span>", "css": ".ds-stamp{display:inline-block;padding:4px 12px 3px;border:3px solid #cf232c;border-radius:5px;color:#cf232c;font-family:'Archivo Variable',sans-serif;font-size:1.35rem;font-weight:850;font-stretch:78%;letter-spacing:.07em;text-transform:uppercase;transform:rotate(-9deg);mix-blend-mode:multiply;opacity:.9}" }
+  ],
+  "narrative": {
+    "northStar": "The Carbon Set",
+    "overview": "The page is a multipart IT change request. Each section is one copy of the set on its own sheet colour, printed in one spot blue and filled in with near-black ink. One red stamp marks the approval step.",
+    "keyCharacteristics": ["Sheet colours at page scale", "One print colour, one ink", "Square ruled boxes", "Screenshots as attachments"],
+    "rules": [
+      { "name": "The One Print Colour Rule", "body": "Form parts are print blue, the person's entries are ink, only the stamp is red.", "section": "colors" },
+      { "name": "The Whole Sheet Rule", "body": "A sheet colour owns its whole section, never a small accent.", "section": "colors" },
+      { "name": "The Label Is a Field Rule", "body": "Uppercase labels name values and never sit above headings.", "section": "typography" }
+    ],
+    "dos": ["Do give each section its own sheet colour and a print-blue bar", "Do frame real screenshots as attachments"],
+    "donts": ["Don't add shadows, gradients or rounded cards", "Don't use the stamp more than once", "Don't use the em dash or en dash"]
+  }
+}

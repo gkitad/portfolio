@@ -13,7 +13,7 @@ export default function Nav() {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
-    const els = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean) as HTMLElement[];
+    const els = ["intro", ...SECTIONS.map((s) => s.id)].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
@@ -25,9 +25,9 @@ export default function Nav() {
   }, []);
 
   return (
-    <nav className={styles.pill} aria-label="Sections">
+    <nav className={styles.nav} aria-label="Sections">
       {SECTIONS.map((s) => (
-        <a key={s.id} href={`#${s.id}`} className={styles.pillLink} aria-current={active === s.id ? "true" : undefined}>
+        <a key={s.id} href={`#${s.id}`} className={styles.navLink} aria-current={active === s.id ? "true" : undefined}>
           {s.label}
         </a>
       ))}

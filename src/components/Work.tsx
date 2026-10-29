@@ -1,11 +1,21 @@
 import Image from "next/image";
 import styles from "@/app/page.module.css";
+import Stamp from "@/components/Stamp";
 import { opsLabArchitecture, type Project } from "@/content";
 
 function Arrow() {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.linkIcon}>
       <path d="M5 11 11 5M6 5h5v5" />
+    </svg>
+  );
+}
+
+function Check() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.check}>
+      <rect x="1.5" y="1.5" width="13" height="13" />
+      <path d="M4.5 8.2 7 10.6l4.6-5.2" />
     </svg>
   );
 }
@@ -28,20 +38,18 @@ export function ProjectLinks({ project, size = "md" }: { project: Project; size?
   );
 }
 
-function Shot({ project, sizes, crop }: { project: Project; sizes: string; crop?: boolean }) {
+export function Shot({ project, sizes, crop }: { project: Project; sizes: string; crop?: boolean }) {
   if (!project.image) return null;
   return (
-    <a href={project.demo ?? project.source} className={styles.shot} tabIndex={-1} aria-hidden="true">
-      <span className={styles.shotBar}>
-        <span />
-        <span />
-        <span />
-        <span className={styles.shotUrl}>{project.image.url}</span>
-      </span>
-      <span className={crop ? styles.shotCrop : styles.shotFull}>
-        <Image src={project.image.src} alt={project.image.alt} sizes={sizes} placeholder="blur" className={styles.shotImg} />
-      </span>
-    </a>
+    <figure className={styles.attach}>
+      <a href={project.demo ?? project.source} className={crop ? styles.attachCrop : styles.attachFull} tabIndex={-1} aria-hidden="true">
+        <Image src={project.image.src} alt={project.image.alt} sizes={sizes} placeholder="blur" className={styles.attachImg} />
+      </a>
+      <figcaption className={styles.attachCap}>
+        <span>Attachment</span>
+        <span>{project.image.url}</span>
+      </figcaption>
+    </figure>
   );
 }
 
@@ -57,65 +65,82 @@ function Stack({ items }: { items: string[] }) {
 
 export function Featured({ project }: { project: Project }) {
   return (
-    <article className={styles.featured} aria-labelledby="featured-title">
-      <header className={styles.featuredHead}>
-        <div>
-          <p className={styles.eyebrow}>
-            <span className={styles.eyebrowDot} aria-hidden="true" />
-            Featured project, {project.meta}
-          </p>
+    <article className={styles.record} aria-labelledby="featured-title">
+      <header className={styles.recordHead}>
+        <div className={styles.recordTitle}>
           <h3 id="featured-title" className={styles.featuredName}>
             {project.name}
           </h3>
-          <p className={styles.featuredTagline}>{project.tagline}</p>
+          <p className={styles.recordTagline}>{project.tagline}</p>
         </div>
-        <ProjectLinks project={project} />
+        <dl className={styles.recordMeta}>
+          <div>
+            <dt>Type</dt>
+            <dd>Featured project</dd>
+          </div>
+          <div>
+            <dt>Built with</dt>
+            <dd>{project.meta}</dd>
+          </div>
+        </dl>
       </header>
 
-      <div className={styles.featuredBody}>
+      <div className={styles.recordBody}>
         <Shot project={project} sizes="(max-width: 980px) 100vw, 760px" />
 
-        <div className={styles.featuredSide}>
-          <h4 className={styles.miniTitle}>How an incident runs</h4>
-          <ol className={styles.sequence}>
-            {project.steps?.map((s, i) => (
-              <li key={s.label}>
-                <span className={styles.seqNum}>{String(i + 1).padStart(2, "0")}</span>
+        <div className={styles.workflow}>
+          <h4 className={styles.boxTitle}>How an incident runs</h4>
+          <ol className={styles.steps}>
+            {project.steps?.map((s) => (
+              <li key={s.label} className={s.label === "Approval" ? styles.stepApproval : undefined}>
+                <Check />
                 <span>
                   <strong>{s.label}</strong>
-                  <span className={styles.seqDetail}>{s.detail}</span>
+                  <span className={styles.stepDetail}>{s.detail}</span>
                 </span>
+                {s.label === "Approval" && <Stamp label="Approved" />}
               </li>
             ))}
           </ol>
-          {project.proof && <p className={styles.proof}>{project.proof}</p>}
+          {project.proof && (
+            <div className={styles.result}>
+              <span className={styles.label}>Result</span>
+              <p>{project.proof}</p>
+            </div>
+          )}
+          <ProjectLinks project={project} />
         </div>
       </div>
 
-      <div className={styles.featuredFoot}>
-        <div className={styles.featuredText}>
+      <div className={styles.recordFoot}>
+        <div className={styles.recordText}>
+          <span className={styles.label}>Description</span>
           <p>{project.description}</p>
           <Stack items={project.stack} />
         </div>
         <figure className={styles.arch} aria-labelledby="arch-caption">
-          <figcaption id="arch-caption" className={styles.miniTitle}>
+          <figcaption id="arch-caption" className={styles.boxTitle}>
             What runs where
           </figcaption>
-          <ol className={styles.archList}>
-            {opsLabArchitecture.map((n) => (
-              <li key={n.name}>
-                <strong>{n.name}</strong>
-                <span>{n.detail}</span>
-                {n.items && (
-                  <span className={styles.archItems}>
-                    {n.items.map((i) => (
-                      <code key={i}>{i}</code>
-                    ))}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ol>
+          <table className={styles.archTable}>
+            <tbody>
+              {opsLabArchitecture.map((n) => (
+                <tr key={n.name}>
+                  <th scope="row">{n.name}</th>
+                  <td>
+                    {n.detail}
+                    {n.items && (
+                      <span className={styles.archItems}>
+                        {n.items.map((i) => (
+                          <code key={i}>{i}</code>
+                        ))}
+                      </span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <p className={styles.archNote}>A demo lab I run for this portfolio, not a production system.</p>
         </figure>
       </div>
@@ -128,10 +153,12 @@ export function ProjectRow({ project, index }: { project: Project; index: number
     <article className={styles.row} aria-labelledby={`project-${index}`}>
       <Shot project={project} sizes="(max-width: 980px) 100vw, 520px" crop />
       <div className={styles.rowBody}>
-        <p className={styles.rowMeta}>{project.meta}</p>
-        <h3 id={`project-${index}`} className={styles.rowName}>
-          {project.name}
-        </h3>
+        <div className={styles.rowHead}>
+          <h3 id={`project-${index}`} className={styles.rowName}>
+            {project.name}
+          </h3>
+          <span className={styles.rowMeta}>{project.meta}</span>
+        </div>
         <p className={styles.rowTagline}>{project.tagline}</p>
         {project.steps && (
           <ol className={styles.flow} aria-label="How it works">
@@ -145,14 +172,17 @@ export function ProjectRow({ project, index }: { project: Project; index: number
         )}
         <p className={styles.rowDesc}>{project.description}</p>
         {project.guard && (
-          <p className={styles.guard}>
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M8 1.5 13.5 3.5v4c0 3.2-2.3 5.8-5.5 7-3.2-1.2-5.5-3.8-5.5-7v-4L8 1.5Z" />
-            </svg>
-            {project.guard}
-          </p>
+          <div className={styles.control}>
+            <span className={styles.label}>Control</span>
+            <p>{project.guard}</p>
+          </div>
         )}
-        {project.proof && <p className={styles.proof}>{project.proof}</p>}
+        {project.proof && (
+          <div className={styles.control}>
+            <span className={styles.label}>Result</span>
+            <p>{project.proof}</p>
+          </div>
+        )}
         <div className={styles.rowFoot}>
           <Stack items={project.stack} />
           <ProjectLinks project={project} size="sm" />
@@ -165,17 +195,15 @@ export function ProjectRow({ project, index }: { project: Project; index: number
 export function PersonalProject({ project }: { project: Project }) {
   return (
     <article className={styles.personal} aria-labelledby="personal-title">
-      <p className={styles.rowMeta}>Personal project, {project.meta}</p>
-      <div className={styles.personalBody}>
-        <div>
-          <h3 id="personal-title" className={styles.personalName}>
-            {project.name}
-          </h3>
-          <p className={styles.rowTagline}>{project.tagline}</p>
-        </div>
-        <p className={styles.rowDesc}>{project.description}</p>
-        <Stack items={project.stack} />
+      <div className={styles.personalHead}>
+        <h3 id="personal-title" className={styles.rowName}>
+          {project.name}
+        </h3>
+        <span className={styles.rowMeta}>Personal project, {project.meta}</span>
       </div>
+      <p className={styles.rowTagline}>{project.tagline}</p>
+      <p className={styles.rowDesc}>{project.description}</p>
+      <Stack items={project.stack} />
     </article>
   );
 }

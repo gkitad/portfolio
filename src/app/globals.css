@@ -1,25 +1,21 @@
 :root {
-  --bg: #0f1012;
-  --bg-raise: #17181b;
-  --panel: rgba(255, 255, 255, 0.035);
-  --panel-strong: rgba(255, 255, 255, 0.06);
-  --line: rgba(255, 255, 255, 0.09);
-  --line-strong: rgba(255, 255, 255, 0.16);
-  --text: #ececee;
-  --muted: #9a9ca3;
-  --faint: #63656c;
-  --ok: #5fd394;
-  --ok-bg: rgba(95, 211, 148, 0.12);
-  --warn: #f2b544;
-  --warn-bg: rgba(242, 181, 68, 0.12);
-  --fail: #ff6b5e;
-  --fail-bg: rgba(255, 107, 94, 0.13);
-  --unknown: #4b4d54;
-  --focus: #a9c7ff;
-  --sans: "Instrument Sans Variable", system-ui, sans-serif;
-  --serif: "Instrument Serif", Georgia, serif;
-  --mono: "JetBrains Mono Variable", ui-monospace, monospace;
-  color-scheme: dark;
+  /* Carbonless form sheets */
+  --sheet-white: #ffffff;
+  --sheet-canary: #fff0a3;
+  --sheet-pink: #ffd8e2;
+  --sheet-gold: #f6c95a;
+  /* Form print (one spot colour), typed entries, rubber stamp */
+  --print: #1f3c9c;
+  --print-soft: rgba(31, 60, 156, 0.55);
+  --print-faint: rgba(31, 60, 156, 0.12);
+  --ink: #13151b;
+  --ink-soft: #3a3d47;
+  --stamp: #cf232c;
+  --rule: 1.5px;
+  --sans: "Archivo Variable", "Arial Narrow", sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  color-scheme: light;
 }
 
 * {
@@ -28,20 +24,21 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  background: var(--bg);
+  background: var(--sheet-white);
+  scrollbar-color: var(--print-soft) var(--sheet-white);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  color: var(--text);
+  color: var(--ink);
+  background: var(--sheet-white);
   font-family: var(--sans);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   line-height: 1.55;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
-  background:
-    radial-gradient(1200px 600px at 50% -200px, rgba(255, 255, 255, 0.07), transparent 70%),
-    var(--bg);
+  caret-color: var(--print);
 }
 
 h1,
@@ -53,7 +50,8 @@ ul,
 ol,
 dl,
 dd,
-pre {
+pre,
+figure {
   margin: 0;
 }
 
@@ -65,8 +63,8 @@ ol {
 
 a {
   color: inherit;
-  text-underline-offset: 0.22em;
-  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1.5px;
 }
 
 button {
@@ -80,13 +78,13 @@ pre {
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus);
+  outline: 3px solid var(--print);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 ::selection {
-  background: rgba(169, 199, 255, 0.3);
+  background: var(--print);
+  color: var(--sheet-white);
 }
 
 @media (prefers-reduced-motion: reduce) {
