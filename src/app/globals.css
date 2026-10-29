@@ -10,6 +10,7 @@
   --print-faint: rgba(31, 60, 156, 0.12);
   --ink: #13151b;
   --ink-soft: #3a3d47;
+  --ink-faint: rgba(19, 21, 27, 0.3);
   --stamp: #cf232c;
   --rule: 1.5px;
   --sans: "Archivo Variable", "Arial Narrow", sans-serif;
