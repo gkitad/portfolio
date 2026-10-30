@@ -9,7 +9,7 @@ const SECTIONS = [
   { id: "contact", label: "Contact" },
 ];
 
-export default function Nav() {
+export default function Nav({ base = "" }: { base?: string }) {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Nav() {
   return (
     <nav className={styles.nav} aria-label="Sections">
       {SECTIONS.map((s) => (
-        <a key={s.id} href={`#${s.id}`} className={styles.navLink} aria-current={active === s.id ? "true" : undefined}>
+        <a key={s.id} href={`${base}#${s.id}`} className={styles.navLink} aria-current={active === s.id ? "true" : undefined}>
           {s.label}
         </a>
       ))}

@@ -5,6 +5,10 @@ import opsLabShot from "@/assets/work/agent-ops-lab.jpg";
 import incidentShot from "@/assets/work/incident-responder.jpg";
 import onboardingShot from "@/assets/work/onboarding-agent.jpg";
 import helpdeskShot from "@/assets/work/helpdesk-assistant.jpg";
+import opsLabCrop from "@/assets/work/agent-ops-lab-crop.jpg";
+import incidentCrop from "@/assets/work/incident-responder-crop.jpg";
+import onboardingCrop from "@/assets/work/onboarding-agent-crop.jpg";
+import helpdeskCrop from "@/assets/work/helpdesk-assistant-crop.jpg";
 
 export const profile = {
   name: "Anthony Jaimez",
@@ -38,6 +42,13 @@ export type Project = {
   guard?: string;
   proof?: string;
   image?: { src: StaticImageData; alt: string; url: string };
+  /** The part of the screenshot that shows the key moment, with a caption that says what is happening. */
+  shot?: { src: StaticImageData; caption: string };
+  /** A short version of the description for the home page. */
+  summary?: string;
+  /** Where a visitor can check the result for themselves. */
+  evidence?: { label: string; href: string };
+  caseStudy?: string;
   demo?: string;
   source?: string;
 };
@@ -53,6 +64,15 @@ export const opsLabArchitecture: { name: string; detail: string; items?: string[
     detail: "Six containers on one DigitalOcean droplet",
     items: ["lb-01", "crm-app-01", "crm-app-02", "db-01", "dns-01", "office-pc"],
   },
+];
+
+/** The guardrails the lab enforces, as listed on the lab's own page. */
+export const opsLabGuards = [
+  "No shell: every command is parsed and checked against an allowlist before it runs.",
+  "Credentials, private keys and environment variables can't be read, and output is redacted.",
+  "Database queries run as a read-only Postgres role.",
+  "The agent holds a different token from the approver, so it can't approve its own changes.",
+  "Every call, allowed or blocked, lands in an audit log.",
 ];
 
 export const projects: Project[] = [
@@ -71,7 +91,15 @@ export const projects: Project[] = [
       { label: "Fix", detail: "The smallest change the evidence supports." },
       { label: "Verification", detail: "The lab runs its own user check before it counts as fixed." },
     ],
-    proof: "Tested with Haiku, Sonnet and Opus: 15 of 15 outages fixed, and none of them followed the fake instructions.",
+    proof: "5 faults, each run with Haiku, Sonnet and Opus: all 15 runs fixed the outage, and none followed the fake instructions.",
+    summary:
+      "A small company's CRM runs on a real server with a load balancer, two app servers, PostgreSQL and DNS. I break it on purpose. Claude only gets the user's complaint, has to find the cause through an MCP server I wrote, and asks a person before every change.",
+    evidence: { label: "See the 15 runs", href: "https://138-197-164-83.sslip.io/#benchmark" },
+    caseStudy: "/agent-ops-lab",
+    shot: {
+      src: opsLabCrop,
+      caption: "Claude traced a CRM outage to a reporting job holding the database connections, and asks before ending only those 35 sessions.",
+    },
     image: {
       src: opsLabShot,
       alt: "Agent Ops Lab mid-incident: Claude has traced a CRM outage to a reporting job holding every database connection and is asking for approval to end only those 35 sessions.",
@@ -100,6 +128,10 @@ export const projects: Project[] = [
       alt: "The Incident Responder waiting for approval to renew an expired certificate, with the load balancer marked as failing on the network map.",
       url: "ai-incident-responder.vercel.app",
     },
+    shot: {
+      src: incidentCrop,
+      caption: "The agent's map during an expired-certificate outage: it checked the load balancer first, then DNS.",
+    },
     demo: "https://ai-incident-responder.vercel.app/",
     source: "https://github.com/gkitad/ai-incident-responder",
   },
@@ -123,6 +155,10 @@ export const projects: Project[] = [
       alt: "The Onboarding Agent setting up a new Finance hire, paused for approval before adding her to the payroll and banking share.",
       url: "it-onboarding-agent-nine.vercel.app",
     },
+    shot: {
+      src: onboardingCrop,
+      caption: "Setting up a new Finance hire, paused before adding her to the payroll and banking share.",
+    },
     demo: "https://it-onboarding-agent-nine.vercel.app/",
     source: "https://github.com/gkitad/it-onboarding-agent",
   },
@@ -145,6 +181,10 @@ export const projects: Project[] = [
       src: helpdeskShot,
       alt: "The Helpdesk Assistant filing a phishing report as a P1 for Security, with containment steps for the user.",
       url: "it-helpdesk-assistant-three.vercel.app",
+    },
+    shot: {
+      src: helpdeskCrop,
+      caption: "A phishing report filed as P1 for Security, with what the user should do right now.",
     },
     demo: "https://it-helpdesk-assistant-three.vercel.app/",
     source: "https://github.com/gkitad/it-helpdesk-assistant",

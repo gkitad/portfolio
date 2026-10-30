@@ -1,7 +1,8 @@
-import Image from "next/image";
+import Link from "next/link";
 import styles from "@/app/page.module.css";
 import Stamp from "@/components/Stamp";
-import { opsLabArchitecture, type Project } from "@/content";
+import ZoomShot from "@/components/ZoomShot";
+import { opsLabArchitecture, opsLabGuards, type Project } from "@/content";
 
 function Arrow() {
   return (
@@ -20,7 +21,7 @@ function Check() {
   );
 }
 
-export function ProjectLinks({ project, size = "md" }: { project: Project; size?: "md" | "sm" }) {
+export function ProjectLinks({ project, size = "md", caseStudy = true }: { project: Project; size?: "md" | "sm"; caseStudy?: boolean }) {
   if (!project.demo && !project.source) return null;
   return (
     <p className={`${styles.links} ${size === "sm" ? styles.linksSm : ""}`}>
@@ -28,6 +29,11 @@ export function ProjectLinks({ project, size = "md" }: { project: Project; size?
         <a href={project.demo} className={styles.btnPrimary} aria-label={`Live demo of ${project.name}`}>
           Live demo <Arrow />
         </a>
+      )}
+      {caseStudy && project.caseStudy && (
+        <Link href={project.caseStudy} className={styles.btnGhost}>
+          How it works
+        </Link>
       )}
       {project.source && (
         <a href={project.source} className={styles.btnGhost} aria-label={`Source code of ${project.name} on GitHub`}>
@@ -38,28 +44,57 @@ export function ProjectLinks({ project, size = "md" }: { project: Project; size?
   );
 }
 
-export function Shot({ project, sizes, crop }: { project: Project; sizes: string; crop?: boolean }) {
-  if (!project.image) return null;
+export function Shot({ project, sizes, priority }: { project: Project; sizes: string; priority?: boolean }) {
+  if (!project.shot) return null;
   return (
-    <figure className={styles.attach}>
-      <a href={project.demo ?? project.source} className={crop ? styles.attachCrop : styles.attachFull} tabIndex={-1} aria-hidden="true">
-        <Image src={project.image.src} alt={project.image.alt} sizes={sizes} quality={90} placeholder="blur" className={styles.attachImg} />
-      </a>
-      <figcaption className={styles.attachCap}>
-        <span>Attachment</span>
-        <span>{project.image.url}</span>
-      </figcaption>
-    </figure>
+    <ZoomShot
+      crop={project.shot.src}
+      caption={project.shot.caption}
+      full={project.image ? { src: project.image.src, alt: project.image.alt } : undefined}
+      sizes={sizes}
+      priority={priority}
+    />
   );
 }
 
-function Stack({ items }: { items: string[] }) {
+export function Stack({ items }: { items: string[] }) {
   return (
     <ul className={styles.stack} aria-label="Technologies">
       {items.map((t) => (
         <li key={t}>{t}</li>
       ))}
     </ul>
+  );
+}
+
+/** The steps as one line: names only, the approval step stamped. */
+function StepStrip({ project, stamp }: { project: Project; stamp?: boolean }) {
+  if (!project.steps) return null;
+  return (
+    <ol className={styles.strip} aria-label="How it works">
+      {project.steps.map((s) => (
+        <li key={s.label} className={stamp && s.label === "Approval" ? styles.stripApproval : undefined}>
+          <Check />
+          {s.label}
+          {stamp && s.label === "Approval" && <Stamp label="Approved" />}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function Result({ project }: { project: Project }) {
+  if (!project.proof) return null;
+  return (
+    <div className={styles.result}>
+      <span className={styles.label}>Result</span>
+      <p>{project.proof}</p>
+      {project.evidence && (
+        <a href={project.evidence.href} className={styles.btnText}>
+          {project.evidence.label} <Arrow />
+        </a>
+      )}
+    </div>
   );
 }
 
@@ -87,65 +122,18 @@ export function Featured({ project }: { project: Project }) {
 
       <div className={styles.recordBody}>
         <div className={styles.recordMain}>
-          <Shot project={project} sizes="(max-width: 980px) 100vw, 760px" />
-          <div className={styles.recordText}>
-            <span className={styles.label}>Description</span>
-            <p>{project.description}</p>
-            <Stack items={project.stack} />
-          </div>
+          <Shot project={project} sizes="(max-width: 1080px) 100vw, 760px" />
         </div>
-
         <div className={styles.workflow}>
-          <h4 className={styles.boxTitle}>How an incident runs</h4>
-          <ol className={styles.steps}>
-            {project.steps?.map((s) => (
-              <li key={s.label} className={s.label === "Approval" ? styles.stepApproval : undefined}>
-                <Check />
-                <span>
-                  <strong>{s.label}</strong>
-                  <span className={styles.stepDetail}>{s.detail}</span>
-                </span>
-                {s.label === "Approval" && <Stamp label="Approved" />}
-              </li>
-            ))}
-          </ol>
-          {project.proof && (
-            <div className={styles.result}>
-              <span className={styles.label}>Result</span>
-              <p>{project.proof}</p>
-            </div>
-          )}
+          <div className={styles.summary}>
+            <span className={styles.label}>What I built</span>
+            <p>{project.summary}</p>
+          </div>
+          <Result project={project} />
           <ProjectLinks project={project} />
         </div>
       </div>
-
-      <div className={styles.recordFoot}>
-        <figure className={styles.arch} aria-labelledby="arch-caption">
-          <figcaption id="arch-caption" className={styles.boxTitle}>
-            What runs where
-          </figcaption>
-          <table className={styles.archTable}>
-            <tbody>
-              {opsLabArchitecture.map((n) => (
-                <tr key={n.name}>
-                  <th scope="row">{n.name}</th>
-                  <td>
-                    {n.detail}
-                    {n.items && (
-                      <span className={styles.archItems}>
-                        {n.items.map((i) => (
-                          <code key={i}>{i}</code>
-                        ))}
-                      </span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p className={styles.archNote}>A demo lab I run for this portfolio, not a production system.</p>
-        </figure>
-      </div>
+      <StepStrip project={project} stamp />
     </article>
   );
 }
@@ -153,7 +141,7 @@ export function Featured({ project }: { project: Project }) {
 export function ProjectRow({ project, index }: { project: Project; index: number }) {
   return (
     <article className={styles.row} aria-labelledby={`project-${index}`}>
-      <Shot project={project} sizes="(max-width: 980px) 100vw, 520px" crop />
+      <Shot project={project} sizes="(max-width: 1080px) 100vw, 560px" />
       <div className={styles.rowBody}>
         <div className={styles.rowHead}>
           <h3 id={`project-${index}`} className={styles.rowName}>
@@ -163,16 +151,20 @@ export function ProjectRow({ project, index }: { project: Project; index: number
         </div>
         <p className={styles.rowTagline}>{project.tagline}</p>
         {project.steps && (
-          <ol className={styles.flow} aria-label="How it works">
-            {project.steps.map((s) => (
-              <li key={s.label}>
-                <strong>{s.label}</strong>
-                <span>{s.detail}</span>
-              </li>
+          <p className={styles.flowLine} aria-label="How it works">
+            {project.steps.map((s, i) => (
+              <span key={s.label}>
+                {i > 0 && (
+                  <span className={styles.flowArrow} aria-hidden="true">
+                    {" "}
+                    &rarr;{" "}
+                  </span>
+                )}
+                {s.label}
+              </span>
             ))}
-          </ol>
+          </p>
         )}
-        <p className={styles.rowDesc}>{project.description}</p>
         {project.guard && (
           <div className={styles.control}>
             <span className={styles.label}>Control</span>
@@ -185,10 +177,21 @@ export function ProjectRow({ project, index }: { project: Project; index: number
             <p>{project.proof}</p>
           </div>
         )}
-        <div className={styles.rowFoot}>
+        <ProjectLinks project={project} size="sm" />
+        <details className={styles.more}>
+          <summary>More about this project</summary>
+          <p>{project.description}</p>
+          {project.steps && (
+            <ul className={styles.moreSteps}>
+              {project.steps.map((s) => (
+                <li key={s.label}>
+                  <strong>{s.label}.</strong> {s.detail}
+                </li>
+              ))}
+            </ul>
+          )}
           <Stack items={project.stack} />
-          <ProjectLinks project={project} size="sm" />
-        </div>
+        </details>
       </div>
     </article>
   );
@@ -207,5 +210,61 @@ export function PersonalProject({ project }: { project: Project }) {
       <p className={styles.rowDesc}>{project.description}</p>
       <Stack items={project.stack} />
     </article>
+  );
+}
+
+/* ---------- Case study page ---------- */
+
+export function CaseSteps({ project }: { project: Project }) {
+  return (
+    <ol className={styles.steps}>
+      {project.steps?.map((s) => (
+        <li key={s.label} className={s.label === "Approval" ? styles.stepApproval : undefined}>
+          <Check />
+          <span>
+            <strong>{s.label}</strong>
+            <span className={styles.stepDetail}>{s.detail}</span>
+          </span>
+          {s.label === "Approval" && <Stamp label="Approved" />}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+export function Architecture() {
+  return (
+    <table className={styles.archTable}>
+      <tbody>
+        {opsLabArchitecture.map((n) => (
+          <tr key={n.name}>
+            <th scope="row">{n.name}</th>
+            <td>
+              {n.detail}
+              {n.items && (
+                <span className={styles.archItems}>
+                  {n.items.map((i) => (
+                    <code key={i}>{i}</code>
+                  ))}
+                </span>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+export function Guards() {
+  return (
+    <ul className={styles.guards}>
+      {opsLabGuards.map((g) => (
+        <li key={g}>
+          <Check />
+          {g}
+        </li>
+      ))}
+    </ul>
   );
 }

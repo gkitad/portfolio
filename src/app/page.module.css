@@ -208,6 +208,7 @@
 
 .sheet {
   scroll-margin-top: 64px;
+  overflow-x: clip;
 }
 
 .sheetWhite {
@@ -256,60 +257,27 @@
   font-stretch: 85%;
 }
 
-/* Hero: the filled-in front sheet */
+/* Hero: the filled-in front sheet. Headline and actions first, the fields as a strip under them. */
 
 .hero {
   max-width: var(--max);
   margin: 0 auto;
   padding: clamp(24px, 4vw, 48px) var(--gutter) clamp(48px, 7vw, 96px);
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
 }
 
 .heroMain {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  padding: clamp(28px, 4vw, 56px) clamp(20px, 3vw, 40px);
   border: var(--box);
 }
 
-.fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.fields > div {
-  padding: 12px 16px 14px;
-  border-bottom: var(--box);
-}
-
-.fields > div:nth-child(even) {
-  border-right: var(--box);
-}
-
-.fieldWide {
-  grid-column: 1 / -1;
-}
-
-.fields dd {
-  margin-top: 4px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 560;
-  line-height: 1.35;
-}
-
-.statement {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 24px;
-  padding: clamp(28px, 4vw, 48px) clamp(20px, 3vw, 36px);
-}
-
 .heroTitle {
-  font-size: clamp(2.4rem, 5vw, 4.9rem);
+  font-size: clamp(2.4rem, 4.6vw, 4.6rem);
   font-weight: 820;
   font-stretch: 104%;
   line-height: 0.98;
@@ -319,50 +287,10 @@
 }
 
 .heroLead {
-  max-width: 52ch;
+  max-width: 50ch;
   font-size: clamp(1.1rem, 1.4vw, 1.3rem);
   line-height: 1.5;
   color: var(--ink-soft);
-}
-
-.heroSide {
-  display: flex;
-  flex-direction: column;
-  border: var(--box);
-  border-left: 0;
-}
-
-.heroSide .attach {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border: 0;
-  border-bottom: var(--box);
-}
-
-.heroSide .attachFull {
-  flex: 1;
-  min-height: 260px;
-  position: relative;
-}
-
-.heroSide .attachImg {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  object-fit: cover;
-  object-position: top left;
-}
-
-.approval {
-  display: grid;
-  gap: 18px;
-  padding: 20px;
-}
-
-.approvalText {
-  max-width: 44ch;
-  line-height: 1.45;
 }
 
 .heroActions {
@@ -370,6 +298,44 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
+  margin-top: 4px;
+}
+
+.heroSide {
+  display: flex;
+  align-items: center;
+  padding: clamp(16px, 2vw, 24px);
+  border: var(--box);
+  border-left: 0;
+  background: var(--print-faint);
+}
+
+.heroSide .attach {
+  width: 100%;
+}
+
+.fields {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--rule);
+  background: var(--print);
+  border: var(--box);
+  border-top: 0;
+}
+
+.fields > div {
+  padding: 12px 16px 14px;
+  background: var(--sheet-white);
+}
+
+.fields dd {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 560;
+  line-height: 1.35;
 }
 
 /* The rest of the carbon set, showing under the front sheet */
@@ -403,21 +369,21 @@
   margin: 0 18px;
 }
 
-/* Attachments: real screenshots, framed like a stapled printout */
+/* Screenshots: the key moment, cropped, with a caption. Click to see the whole screen. */
 
 .attach {
   border: var(--box);
   background: var(--sheet-white);
 }
 
-.attachFull,
-.attachCrop {
+.zoomButton {
+  position: relative;
   display: block;
-  overflow: hidden;
-}
-
-.attachCrop {
-  aspect-ratio: 16 / 10;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: #101114;
+  cursor: zoom-in;
 }
 
 .attachImg {
@@ -426,27 +392,83 @@
   height: auto;
 }
 
-.attachCrop .attachImg {
-  height: 100%;
-  object-fit: cover;
-  object-position: top left;
+.zoomHint {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  background: var(--sheet-white);
+  color: var(--print);
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: var(--box);
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+
+.zoomHint svg {
+  width: 0.9em;
+  height: 0.9em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.zoomButton:hover .zoomHint,
+.zoomButton:focus-visible .zoomHint {
+  background: var(--print);
+  color: var(--sheet-white);
 }
 
 .attachCap {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 8px 12px;
+  padding: 10px 14px 12px;
   border-top: var(--box);
   color: var(--ink-soft);
-  font-size: 0.82rem;
-  font-weight: 600;
-  font-stretch: 85%;
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
 
-.attachCap span:first-child {
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
+.lightbox {
+  width: min(1400px, 96vw);
+  max-width: none;
+  max-height: 96vh;
+  padding: 0;
+  border: var(--box);
+  background: var(--sheet-white);
+}
+
+.lightbox::backdrop {
+  background: rgba(19, 21, 27, 0.78);
+}
+
+.lightboxInner {
+  display: grid;
+}
+
+.lightboxImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(96vh - 80px);
+  object-fit: contain;
+  background: #101114;
+}
+
+.lightboxBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding: 12px 16px;
+  border-top: var(--box);
+}
+
+.lightboxBar p {
+  max-width: 80ch;
+  color: var(--ink-soft);
 }
 
 /* Featured project: the main change record */
@@ -517,7 +539,7 @@
 }
 
 .recordMain > .attach {
-  margin: clamp(16px, 2vw, 24px) clamp(16px, 2vw, 24px) 0;
+  margin: clamp(16px, 2vw, 24px);
 }
 
 .workflow {
@@ -627,6 +649,139 @@
 .workflow > .links {
   padding: 16px;
   margin-top: auto;
+}
+
+.summary {
+  padding: 16px;
+  border-bottom: var(--box);
+}
+
+.summary p {
+  margin-top: 6px;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.result .btnText {
+  margin-top: 8px;
+  min-height: 0;
+  padding: 0;
+}
+
+/* The steps in one line under the featured record, the approval step stamped */
+
+.strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--rule);
+  background: var(--print);
+  border-top: var(--box);
+}
+
+.strip li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--sheet-white);
+  font-weight: 750;
+}
+
+.stripApproval .stamp {
+  right: -14px;
+  top: -6px;
+  transform: rotate(-9deg);
+  font-size: 1.05rem;
+  z-index: 1;
+}
+
+.stripApproval .stamp[data-state="armed"] {
+  transform: rotate(-9deg) scale(1.9);
+}
+
+.stripApproval .stamp[data-state="pressed"] {
+  animation-name: stampStrip;
+}
+
+@keyframes stampStrip {
+  0% {
+    opacity: 0;
+    transform: rotate(-9deg) scale(1.9);
+    filter: blur(2px);
+  }
+  60% {
+    opacity: 0.95;
+    transform: rotate(-9deg) scale(0.97);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0.9;
+    transform: rotate(-9deg) scale(1);
+  }
+}
+
+/* Other projects: the steps as one line, the details folded away */
+
+.flowLine {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.flowArrow {
+  color: var(--print);
+  font-weight: 700;
+}
+
+.more {
+  border-top: var(--box);
+  padding-top: 12px;
+}
+
+.more summary {
+  cursor: pointer;
+  color: var(--print);
+  font-weight: 700;
+  list-style-position: inside;
+}
+
+.more summary:hover {
+  color: var(--ink);
+}
+
+.more[open] {
+  display: grid;
+  gap: 12px;
+}
+
+.more p {
+  max-width: 68ch;
+}
+
+.moreSteps {
+  display: grid;
+  gap: 6px;
+}
+
+.guards {
+  display: grid;
+}
+
+.guards li {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  padding: 12px 16px;
+  border-bottom: var(--box);
+  line-height: 1.45;
+}
+
+.guards li:last-child {
+  border-bottom: 0;
+}
+
+.guards .check {
+  transform: translateY(0.15em);
 }
 
 .recordFoot {
@@ -981,9 +1136,75 @@
   border-top: var(--box);
 }
 
+/* Case study page */
+
+.caseHero {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(28px, 4vw, 56px) var(--gutter) clamp(48px, 7vw, 96px);
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+}
+
+.caseHero > .attach {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.caseGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 40px);
+  align-items: start;
+}
+
+.caseText {
+  display: grid;
+  gap: 14px;
+  padding: clamp(18px, 2.5vw, 28px);
+}
+
+.caseText p {
+  max-width: 68ch;
+  line-height: 1.55;
+}
+
+.caseBlock {
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+.caseResults {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+}
+
+.caseFigure {
+  padding: clamp(18px, 3vw, 36px);
+  font-size: clamp(3.2rem, 8vw, 6rem);
+  font-weight: 870;
+  font-stretch: 110%;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  border-right: var(--box);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+.caseEnd {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(48px, 7vw, 96px) var(--gutter);
+  display: grid;
+  gap: 20px;
+}
+
 /* Responsive */
 
 @media (max-width: 1080px) {
+  .caseGrid,
   .hero,
   .recordBody,
   .recordFoot,
@@ -994,6 +1215,10 @@
   .heroSide {
     border-left: var(--box);
     border-top: 0;
+  }
+
+  .fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .workflow,
@@ -1041,18 +1266,28 @@
     border-left: var(--box);
   }
 
-  .contact {
+  .contact,
+  .caseResults {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .caseFigure {
+    border-right: 0;
+    border-bottom: var(--box);
   }
 }
 
 @media (max-width: 560px) {
-  .fields {
+  .fields,
+  .strip {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .fields > div:nth-child(even) {
-    border-right: 0;
+  .stripApproval .stamp {
+    left: auto;
+    right: 16px;
+    top: 10px;
+    bottom: auto;
   }
 
   .stepApproval {
@@ -1089,47 +1324,6 @@
 
   .archTable th {
     width: 7rem;
-  }
-
-  /* Phone: the statement and the action come first, the fields after. */
-  .hero {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .heroMain,
-  .heroSide {
-    display: contents;
-  }
-
-  .statement {
-    order: 1;
-    border: var(--box);
-    padding: 28px 20px;
-  }
-
-  .approval {
-    order: 2;
-    border: var(--box);
-    border-top: 0;
-  }
-
-  .fields {
-    order: 3;
-    border: var(--box);
-    border-top: 0;
-  }
-
-  .fields > div:last-child {
-    border-bottom: 0;
-  }
-
-  .heroSide .attach {
-    display: none;
-  }
-
-  .copies {
-    order: 4;
   }
 
   .when {

@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import Nav from "@/components/Nav";
+import SiteHeader from "@/components/SiteHeader";
 import { Featured, PersonalProject, ProjectRow, Shot } from "@/components/Work";
 import { experience, profile, projects, skills } from "@/content";
 
@@ -15,85 +15,63 @@ export default function Home() {
         Skip to projects
       </a>
 
-      <header className={styles.top}>
-        <a href="#top" className={styles.id}>
-          <span className={styles.idName}>{profile.name}</span>
-          <span className={styles.idTitle}>{profile.title}</span>
-        </a>
-        <Nav />
-        <p className={styles.topLinks}>
-          <a href={profile.github}>GitHub</a>
-          <a href={profile.linkedin}>LinkedIn</a>
-        </p>
-      </header>
+      <SiteHeader />
 
       <main id="top">
         <section id="intro" className={`${styles.sheet} ${styles.sheetWhite}`} aria-labelledby="hero-title">
           <div className={styles.hero}>
             <div className={styles.heroMain}>
-              <dl className={styles.fields} aria-label="At a glance">
-                <div className={styles.fieldWide}>
-                  <dt>Status</dt>
-                  <dd>
-                    <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.check}>
-                      <rect x="1.5" y="1.5" width="13" height="13" />
-                      <path d="M4.5 8.2 7 10.6l4.6-5.2" />
+              <h1 id="hero-title" className={styles.heroTitle}>
+                I solve IT problems, and build AI that solves them too.
+              </h1>
+              <p className={styles.heroLead}>{profile.heroIntro}</p>
+              <p className={styles.heroActions}>
+                {lab?.demo && (
+                  <a href={lab.demo} className={styles.btnPrimary}>
+                    Try the {lab.name} demo
+                    <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.linkIcon}>
+                      <path d="M5 11 11 5M6 5h5v5" />
                     </svg>
-                    Open to remote roles in AI and IT
-                  </dd>
-                </div>
-                <div>
-                  <dt>Now</dt>
-                  <dd>
-                    {experience[0].title}, {experience[0].company}
-                  </dd>
-                </div>
-                <div>
-                  <dt>Experience</dt>
-                  <dd>5+ years of enterprise IT support</dd>
-                </div>
-                <div>
-                  <dt>Building</dt>
-                  <dd>AI agents for IT operations, with approvals and audit logs</dd>
-                </div>
-                <div>
-                  <dt>Based in</dt>
-                  <dd>{profile.location}</dd>
-                </div>
-              </dl>
-
-              <div className={styles.statement}>
-                <h1 id="hero-title" className={styles.heroTitle}>
-                  I solve IT problems, and build AI that solves them too.
-                </h1>
-                <p className={styles.heroLead}>{profile.heroIntro}</p>
-              </div>
+                  </a>
+                )}
+                <a href={profile.resume} className={styles.btnGhost} target="_blank" rel="noopener">
+                  Resume PDF
+                </a>
+                <a href="#work" className={styles.btnText}>
+                  Explore projects
+                </a>
+              </p>
             </div>
 
-            <div className={styles.heroSide}>
-              {lab && <Shot project={lab} sizes="(max-width: 980px) 100vw, 1000px" />}
-              <div className={styles.approval}>
-                <p className={styles.approvalText}>
-                  <strong>{lab?.name}.</strong> {lab?.tagline}
-                </p>
-                <p className={styles.heroActions}>
-                  {lab?.demo && (
-                    <a href={lab.demo} className={styles.btnPrimary} aria-label={`Live demo of ${lab.name}`}>
-                      Live demo
-                      <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.linkIcon}>
-                        <path d="M5 11 11 5M6 5h5v5" />
-                      </svg>
-                    </a>
-                  )}
-                  <a href={profile.resume} className={styles.btnGhost} target="_blank" rel="noopener">
-                    Resume PDF
-                  </a>
-                  <a href="#work" className={styles.btnText}>
-                    Explore projects
-                  </a>
-                </p>
+            <div className={styles.heroSide}>{lab && <Shot project={lab} sizes="(max-width: 1080px) 100vw, 600px" priority />}</div>
+
+            <dl className={styles.fields} aria-label="At a glance">
+              <div>
+                <dt>Status</dt>
+                <dd>
+                  <svg viewBox="0 0 16 16" aria-hidden="true" className={styles.check}>
+                    <rect x="1.5" y="1.5" width="13" height="13" />
+                    <path d="M4.5 8.2 7 10.6l4.6-5.2" />
+                  </svg>
+                  Open to remote roles in AI and IT
+                </dd>
               </div>
-            </div>
+              <div>
+                <dt>Now</dt>
+                <dd>
+                  {experience[0].title}, {experience[0].company}
+                </dd>
+              </div>
+              <div>
+                <dt>Experience</dt>
+                <dd>5+ years of enterprise IT support</dd>
+              </div>
+              <div>
+                <dt>Based in</dt>
+                <dd>{profile.location}</dd>
+              </div>
+            </dl>
+
             <div className={styles.copies} aria-hidden="true">
               <span />
               <span />
