@@ -4,6 +4,7 @@ import "./globals.css";
 import Track from "@/components/Track";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.anthonyjaimez.com"),
   title: "Anthony Jaimez | IT Support & AI",
   description:
     "IT Support Specialist with 5+ years of enterprise experience, building AI agents for IT operations. Based in Round Rock, TX, open to remote roles in AI and IT.",
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
     title: "Anthony Jaimez | IT Support & AI",
     description: "IT Support Specialist with 5+ years of enterprise experience, building AI agents for IT operations.",
     type: "website",
+    url: "https://www.anthonyjaimez.com",
   },
 };
 
